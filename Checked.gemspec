@@ -8,8 +8,11 @@ Gem::Specification.new do |s|
   s.authors     = ["da99"]
   s.email       = ["i-hate-spam-45671204@mailinator.com"]
   s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.summary     = %q{Check your types and more.}
+  s.description = %q{
+    Various DSLs to clean, question (Ask), and validate (Demand) your objects,
+  their classes (data types), and their properties.
+  }
 
   s.rubyforge_project = "Checked"
 
