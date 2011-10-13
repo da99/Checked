@@ -1,4 +1,4 @@
-require "Checked"
+require "Checked/Base"
 require "Checked/Clean/DSL"
 require "Checked/Demand/DSL"
 

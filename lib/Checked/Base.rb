@@ -59,15 +59,7 @@ module Base
   end
 
   # 
-  # It's not a multiplication sign.
-  # It's an asterisk.
-  # As in:
-  # 
-  #   Something happend.*
-  #   ............
-  #   ............
-  #   ............
-  #   * = Nothing really bad, however.
+  # Sets the name.
   #   
   def * name
     @target_name = "#{name}, #{target.inspect},"

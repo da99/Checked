@@ -7,8 +7,8 @@ require "Checked/version"
 
 module Checked
   module DSL
-    include Ask::DSL
-    include Clean::DSL
-    include Demand::DSL
+    include ::Checked::Ask::DSL
+    include ::Checked::Clean::DSL
+    include ::Checked::Demand::DSL
   end # === module DSL
 end
