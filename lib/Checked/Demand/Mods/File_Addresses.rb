@@ -38,6 +38,9 @@ module File_Addresses
     self.target= target.strip
     string!
     not_empty!
+    if target[%r!([^a-zA-Z0-9\.\_\-\/~]+)!]
+      fail! "...has invalid characters: #{$1.inspect}"
+    end
   end
 
   def file_read!

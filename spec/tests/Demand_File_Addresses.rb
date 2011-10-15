@@ -1,3 +1,15 @@
+describe "Demand file_address!" do
+  
+  it 'must fail if string has control characters' do
+    lambda { 
+      d = Checked::Demand.new(File.expand_path "~/\tbashee")
+      d.<< :file_address!
+    }.should.raise(Checked::Demand::Failed)
+    .message.should.match %r!has invalid characters: !
+  end
+  
+end # === describe Demand file_address!
+
 
 describe "Demand not_dir!" do
   
