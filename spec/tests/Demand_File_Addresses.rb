@@ -47,3 +47,15 @@ describe "Demand :file_content!" do
   end
   
 end # === describe Demand :file_content!
+
+describe "Demand :hostname!" do
+  
+  it 'must not contain whitespace' do
+    lambda {
+      d = Checked::Demand.new('some name')
+      d.<< :hostname!
+    }.should.raise(Checked::Demand::Failed)
+    .message.should.be == 'String, "some name", has invalid characters: " "'
+  end
+  
+end # === describe Demand :hostname!

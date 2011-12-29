@@ -35,7 +35,7 @@ module Strings
   def matches_only! matcher
       str = target.gsub(matcher, '')
       if !str.empty?
-        fail!( "...invalid characters: #{str.inspect}" ) 
+        fail!( "...has invalid characters: #{str.inspect}" ) 
       end
   end
 

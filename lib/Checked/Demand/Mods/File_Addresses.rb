@@ -11,7 +11,7 @@ module File_Addresses
   def hostname!
     string!
     not_empty!
-    contain_only! %r![\dA-Za-z_-]!
+    matches_only! %r![\dA-Za-z_-]!
   end
 
   def not_dir!
