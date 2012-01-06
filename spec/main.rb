@@ -3,6 +3,11 @@ require File.expand_path('spec/helper')
 require "Bacon_Colored"
 require 'Checked'
 
+class Box
+  include Checked::DSL
+end
+
+BOX = Box.new
 
 FOLDER = ("/tmp/Checked_Test")
 %x! mkdir -p #{FOLDER}!

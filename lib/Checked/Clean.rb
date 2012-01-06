@@ -1,13 +1,10 @@
-require "Checked/Base"
-require "Checked/Clean/DSL"
-require "Checked/Demand/DSL"
 
 module Checked
   class Clean
     module Base
       
       private # =============================
-      include ::Checked::Demand::DSL
+      include ::Checked::DSL
 
       public # ==============================
       include ::Checked::Base

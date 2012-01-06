@@ -36,14 +36,13 @@ module Base
   end
 
   def method_missing name, *args, &blok
-    raise e unless e.message[/undefined method `#{name.to_s}' for/]
     to_name = lambda { |m| m.to_s.split('::').last }
     mods    = self.class.included_modules.select { |m| m.instance_methods.include?(name.to_sym) }
     all     = self.class.included_modules
 
     if mods.empty?
       # Raise original message with added info.
-      raise NoMethodError, "#{e.message} using mods: #{all.map(&to_name).join(', ')}"
+      raise NoMethodError, "#{name.inspect} not found using mods: #{all.map(&to_name).join(', ')}"
     else
       # Tell the user which module to use.
       raise NoMethodError, err_msg(

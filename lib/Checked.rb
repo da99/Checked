@@ -1,16 +1,5 @@
 require "Checked/version"
 
-%w{ Args Base Ask Clean Demand }.each { |klass|
-  require "Checked/#{klass}"
-}
-  
-%w{ Ask Clean Demand }.each { |type|
-  Dir.glob(File.join File.dirname(__FILE__), "Checked/#{type}/.rb").each { |path|
-    path =~ %r!lib/Checked/(.+)/(.+)\.rb!
-    require( "Checked/#{$1}/#{$2}" ) if $1 && $2
-  }
-}
-
 module Checked
   module DSL
     
@@ -65,3 +54,14 @@ module Checked
 
   end # === module DSL
 end
+
+%w{ Args Base Demand Ask Clean }.each { |klass|
+  require "Checked/#{klass}"
+}
+  
+%w{ Demand Ask Clean }.each { |type|
+  Dir.glob(File.join File.dirname(__FILE__), "Checked/#{type}/.rb").each { |path|
+    path =~ %r!lib/Checked/(.+)/(.+)\.rb!
+    require( "Checked/#{$1}/#{$2}" ) if $1 && $2
+  }
+}

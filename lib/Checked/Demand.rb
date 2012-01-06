@@ -1,5 +1,3 @@
-require "Checked/Base"
-require "Checked/Demand/DSL"
 
 
 module Checked

@@ -1,5 +1,3 @@
-require 'Checked/Base'
-require 'Checked/Ask/DSL'
 
 module Checked
   class Ask

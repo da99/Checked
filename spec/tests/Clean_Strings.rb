@@ -1,7 +1,7 @@
 
 shared "Clean" do
   
-  extend Checked::Clean::DSL
+  extend Checked::DSL
 
 end # === shared 
 
