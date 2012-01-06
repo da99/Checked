@@ -34,22 +34,6 @@ module Base
   def purpose
     @purpose ||= self.class.name.split('::').last.downcase.sub(/er$/, '')
   end
-
-  def method_missing name, *args, &blok
-    to_name = lambda { |m| m.to_s.split('::').last }
-    mods    = self.class.included_modules.select { |m| m.instance_methods.include?(name.to_sym) }
-    all     = self.class.included_modules
-
-    if mods.empty?
-      # Raise original message with added info.
-      raise NoMethodError, "#{name.inspect} not found using mods: #{all.map(&to_name).join(', ')}"
-    else
-      # Tell the user which module to use.
-      raise NoMethodError, err_msg(
-              "...can not #{purpose} #{name}, which is found in: #{mods.map(&to_name).join(', ')}"
-      )
-    end
-  end 
   
 end # === module Base
 end # === module Checked
