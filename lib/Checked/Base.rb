@@ -3,23 +3,23 @@ module Checked
 module Base
 
   attr_accessor :target
-  attr_reader :target_name
+  attr_reader :target_name, :original_target
 
   def initialize var, other_val = :no_name
     if other_val == :no_name
       @target_name = begin
-                       if target.respond_to?(:english_name)
-                         target.english_name 
+                       if var.respond_to?(:english_name)
+                         var.english_name 
                        else
-                         "#{target.class.name.gsub('_', ' ')}, #{target.inspect},"
+                         "#{var.class.name.gsub('_', ' ')}"
                        end
                      end
 
-      @original_value = var
+      @original_target = var
       self.target = var
     else
       @target_name = var
-      @original_value = other_val
+      @original_target = other_val
       self.target = other_val
     end
     

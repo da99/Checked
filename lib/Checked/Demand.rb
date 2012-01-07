@@ -31,7 +31,7 @@ module Checked
                     msg
                   end
       
-        @err_msg || "#{target_name} #{message}"
+        @err_msg || "#{target_name}, #{original_target.inspect}, #{message}"
       end
 
       def err_msg= msg

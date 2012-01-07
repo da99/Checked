@@ -60,7 +60,7 @@ end
 }
   
 %w{ Demand Ask Clean }.each { |type|
-  Dir.glob(File.join File.dirname(__FILE__), "Checked/#{type}/.rb").each { |path|
+  Dir.glob(File.join File.dirname(__FILE__), "Checked/#{type}/*.rb").each { |path|
     path =~ %r!lib/Checked/(.+)/(.+)\.rb!
     require( "Checked/#{$1}/#{$2}" ) if $1 && $2
   }

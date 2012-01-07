@@ -1,7 +1,7 @@
 
 shared 'Ask' do
   before {
-    extend Checked::Ask::DSL
+    extend Checked::DSL
   }
 end
 
