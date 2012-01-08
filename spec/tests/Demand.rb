@@ -116,3 +116,21 @@ describe "Demand file_path! :hostname!" do
   end
   
 end # === describe Demand :hostname!
+
+describe "Demand hash! :symbol_keys!" do
+  
+  it 'must raise Fail if keys are not all symbols' do
+    lambda {
+      BOX.hash!( :hello=>'by', 'hi'=>'hiya' ).symbol_keys!
+    }.should.raise(Checked::Demand::Failed)
+    .message.should.match %r!must have all symbol keys!
+  end
+  
+  it 'must not raise Fail if keys are all symbols' do
+    lambda {
+      BOX.hash!( :helo=>'be', :hi=>'hi' ).symbol_keys!
+    }.should.not.raise(Checked::Demand::Failed)
+  end
+  
+  
+end # === describe Demand hash! :symbol_keys!
