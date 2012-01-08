@@ -4,54 +4,68 @@ module Checked
     
     # ============ Demand ==============
     
-    def demand *args
-      raise "No block allowed here." if block_given?
-      
-      Demand.new( *args )
+    def _add_default_name_ args
+      args.unshift(nil) if args.size == 1
     end
-    
-    %w{ Arrays Bools File_Paths Strings Symbols Hashs }.each { |plural|
-      single = plural.downcase.sub(/s\Z/, '')
-      
+
+    %w{ var array bool file_path string symbol hash }.each { |klass|
       eval %~
-        def #{single}! *args, &blok
-          ::Checked::DSL::Obj.new( 'demand', '#{single}', *args )
+        def #{klass}! *args
+          raise "No block allowed here." if block_given?
+          _add_default_name_ args
+          check_it( 'demand', '#{klass}', *args )
+        end
+      
+        def #{klass}? *args
+          raise "No block allowed here." if block_given?
+          _add_default_name_ args
+          check_it( 'ask', '#{klass}', *args )
+        end
+      
+        def #{klass} *args
+          raise "No block allowed here." if block_given?
+          _add_default_name_ args
+          check_it( 'clean', '#{klass}', *args )
         end
       ~
     }
+    
+    alias_method :demand!, :var!
+    alias_method :ask?, :var?
 
     # ============= Ask ================
 
-    def ask? target, *args
-      Checked::Ask.new(target) { |a|
-        a.<< args
-      }.true?
+    def check_it action, klass, name, target
+      ::Checked::DSL::Obj.new( action, klass, name, target )
     end
 
-    def true? target, *args
-      demand! block_given?, :no_block!
-      q = Ask.new(target)
-      q << args
-      q.true?
+    def _main_class_ unk
+      case unk
+      when String
+        'string'
+      when Hash
+        'hash'
+      when Array
+        'array'
+      when Symbol
+        'symbol'
+      when TrueClass, FalseClass
+        'bool'
+      else
+        raise ArgumentError, "Unknown class: #{unk.inspect}"
+      end
     end
 
     def any? target, *args
-      demand! block_given?, :no_block!
-      q = Ask.new(target)
-      q << args
-      q.any?
+      raise "No block allowed." if block_given?
+      
+      args.map { |a|
+        send "#{klass}?", target, a
+        check_it( 'ask', _main_class_(target), nil, target).send( a ).request.response.body
+      }.compact == [true]
     end
 
     # ============ Clean ===============
     
-    def clean target, *args
-      raise "No block allowed here." if block_given?
-
-      c = Clean.new(target)
-      c.<(*args)
-      c.target
-    end
-
-
   end # === module DSL
 end

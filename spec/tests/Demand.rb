@@ -60,7 +60,7 @@ describe "Demand file_path!" do
   
   it 'must fail if string has control characters' do
     lambda { 
-      d = Checked::Demand::File_Paths.new(File.expand_path "~/\tbashee")
+      BOX.file_path!("~/\tbashee").check!
     }.should.raise(Checked::Demand::Failed)
     .message.should.match %r!has invalid characters: !
   end
@@ -72,45 +72,56 @@ describe "Demand file_path! not_dir!" do
   
   it 'must fail for an existing dir' do
     lambda { 
-      Checked::Demand::File_Paths.new(File.expand_path "~/")
-      .not_dir!
+      BOX.file_path!("~/").not_dir!
     }.should.raise(Checked::Demand::Failed)
+    .message.should.match %r!~/", can't be an existing directory.!
   end
   
 end # === describe Demand not_dir!
 
 
 
-describe "Demand file_path! not_file!" do
+describe "Demand string! :file_read!" do
   
-  it 'must fail for an existing file' do
-    lambda { 
-      Checked::Demand::File_Paths.new(File.expand_path "~/.bashrc")
-      .not_file!
-    }.should.raise(Checked::Demand::Failed)
+  it 'returns a string with right carriage returns erased.' do
+    BOX.string!("test\r\ntest\r\n").file_content!.should == "test\ntest\n"
   end
   
-end # === describe Demand not_file!
+end # === describe Demand string! :file_read!
 
-
-describe "Demand file_path! :file_content!" do
+describe "Demand string! :file_content!" do
   
   it 'must fail for an empty string' do
     lambda { 
-      Checked::Demand::File_Paths.new('')
-      .file_content!
+      BOX.string!('').file_content!
     }.should.raise(Checked::Demand::Failed)
     .message.should.be == "String, \"\", can't be empty."
   end
   
 end # === describe Demand :file_content!
 
+describe "Demand file_path! not_file!" do
+  
+  it 'must fail for an existing file' do
+    lambda { 
+      BOX.file_path!("~/.bashrc").not_file!
+    }.should.raise(Checked::Demand::Failed)
+    .message.should.match %r!bashrc", can't be a file!
+  end
+
+  it 'must return expand path' do
+    path = "~/,RANDOM"
+    target = File.expand_path(path)
+    BOX.file_path!(path).not_file!.should.be == target
+  end
+  
+end # === describe Demand not_file!
+
 describe "Demand file_path! :hostname!" do
   
   it 'must not contain whitespace' do
     lambda {
-      Checked::Demand::File_Paths.new('some name')
-      .hostname!
+      BOX.file_path!('some name').hostname!
     }.should.raise(Checked::Demand::Failed)
     .message.should.be == 'String, "some name", has invalid characters: " "'
   end

@@ -5,22 +5,9 @@ module Checked
 
     before
     def save_key
-      target = request.headers.check_target
-      request.env.create :target, target
+      request.response.body= request.headers.check_target
     end
 
-    before
-    def validate_type
-      request.path =~ %r!\A/(demand|ask|clean)/([^/]+)/!
-      if $2 && $2.downcase != 'var'
-        klass = eval($2.capitalize)
-        target = request.env.target
-        if !target.is_a?( klass )
-          raise "Target is invalid class: #{target.class} should be #{klass}"
-        end
-      end
-    end
-    
   end # === class Arch
   
 end # === module Checked

@@ -15,6 +15,10 @@ require "Checked/Base/Arch"
     require( "Checked/#{$1}/#{$2}" ) if $1 && $2
   }
 }
+
+%w{ Arrays Hashs Strings File_Paths }.each { |k|
+  Checked::Arch.use Checked::Demand.const_get(:"#{k}")
+}
   
 
 

@@ -10,6 +10,11 @@ module Checked
       
       include Checked::Base
         
+      route
+      def check!
+        # do nothing
+      end
+    
       def err_msg msg = "...is invalid."
         message = if msg.strip[ %r!^\.\.\.! ]
                     msg.sub('...', '').strip

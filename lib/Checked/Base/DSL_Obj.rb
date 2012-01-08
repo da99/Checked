@@ -6,14 +6,7 @@ module Checked
     class Obj < BasicObject
       
       attr_reader :prefix, :headers
-      def initialize action, klass, unk, val = :_no_name_
-        if val === :_no_name_
-          name = nil
-          val  = unk
-        else
-          name = unk
-        end
-      
+      def initialize action, klass, name, val
         @prefix = "#{action}/#{klass}"
         @headers = { 'check_name' => name, 'check_target' => val }
       end

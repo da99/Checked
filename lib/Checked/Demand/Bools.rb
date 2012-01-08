@@ -1,36 +1,23 @@
 module Checked
   class Demand
     class Bools
-      module Base
         
-        include Demand::Base
-        
-        def bool!
-          case target
-          when FalseClass, TrueClass
-          else
-            fail! "...must be a boolean."
-          end
-        end
-        
-        def be! meth, *args
-          answer = target.send meth, *args
-          demand answer, :bool!
-          return true if answer
-          fail!("...failed #{meth} with #{args.inspect}")
-        end
+      include Demand::Base
 
-        def not_be! meth, *args
-          bool!
-          pass = target.send(meth, *args)
-          demand pass, :bool!
-          return true unless pass
-          fail!("...#{meth} should not be true with #{args.inspect}")
-        end
-        
-      end # === module Base
+      route '/demand/bool/'
+      def validate
+        fail!("...must be a Boolean.") unless [TrueClass, FalseClass].include?(target.class)
+      end
       
-      include Base
+      route  '/demand/true/'
+      def true!
+        fail! "...must be true (TrueClass)." unless target.class == TrueClass
+      end
+      
+      route  '/demand/false/'
+      def false!
+        fail! "...must be false (FalseClass)." unless target.class == FalseClass
+      end
 
     end # === class Bools
   end # === class Demand

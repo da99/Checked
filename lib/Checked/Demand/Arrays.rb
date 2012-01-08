@@ -4,23 +4,22 @@ module Checked
 
       include Demand::Base
 
-      def array!
-        case target
-        when Array
-        else
-          fail! "is not an Array."
-        end
+      namespace '/demand/array/'
+      
+      before
+      def validate_target_class
+        fail! "...is not an Array." unless array?(target)
       end
 
+      route
       def no_nils!
-        array!
         if target.include?(nil)
           fail!("...can't contain nils.")
         end
       end
 
+      route
       def no_empty_strings!
-        array!
         target.each { |s| 
 
           if s.respond_to?(:rewind) 
@@ -33,36 +32,44 @@ module Checked
                     s
                   end
 
+          if !final.is_a?(::String)
+            fail!("Array contains unknown class: #{final.inspect}")
+          end
+          
           if final.is_a?(String) && final.strip.empty?
             fail!("...can't contain empty strings.")
           end
         }
       end
 
+      route
       def symbols!
-        array!
         not_empty!
         if !target.all? { |v| v.is_a?(Symbol) }
           fail! "...contains a non-symbol."
         end
       end
 
-      def include! matcher
-        included = target.include?(matcher)
-        return true if included
+      route
+      def include! 
+        return true if target.include?(matcher)
         fail!("...must contain: #{matcher.inspect}")
       end
 
-      def exclude! matcher
+      route
+      def exclude! 
         raise_e = val.include?(matcher)
         return true unless raise_e
         fail!("...can't contain #{matcher.inspect}")
       end
 
-      def matches_only! matcher
+      route
+      def matches_only! 
         arr = target.reject { |val| val == matcher }
         fail!( "...invalid elements: #{arr.inspect}" ) if !arr.empty?
       end
+      
+      private
 
 
     end # === class Arrays

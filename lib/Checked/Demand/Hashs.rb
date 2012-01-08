@@ -1,15 +1,19 @@
-
-
 module Checked
   class Demand
     class Hashs
+      
       include Demand::Base
 
       namespace '/demand/hash/'
 
+      before
+      def validate_target_class
+        fail!("...must be a Hash") unless hash?(target)
+      end
+
       route
       def symbol_keys!
-        keys = request.env.target.keys
+        keys = target.keys
 
         if keys.all? { |k| k.is_a?(Symbol) }
           # do nothing
@@ -22,7 +26,4 @@ module Checked
   end # === class Demand
 end # === module Checked
 
-
-
-Checked::Arch.use Checked::Demand::Hashs
 
