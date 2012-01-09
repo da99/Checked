@@ -21,13 +21,16 @@ module Checked
       request.headers.check_target
     end
     
-
     def target_name
       if target.respond_to?(:english_name)
-        target.english_name 
-      else
-                         "#{target.class.name.gsub('_', ' ')}"
+        return target.english_name 
       end
+      
+      if request.headers.has_key?(:check_name) && request.headers.check_name
+        return request.headers.check_name
+      end
+      
+      target.class.name.gsub('_', ' ')
     end
 
     #

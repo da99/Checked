@@ -9,11 +9,18 @@ module Checked
       def initialize action, klass, name, val
         @prefix = "#{action}/#{klass}"
         @headers = { 'check_name' => name, 'check_target' => val }
+        @max_missing = 4
+        @miss_count = 0
       end
       
       def method_missing name, *args, &blok
-        raise "No block allowed." if blok
-        raise "Unknown options: #{args.inspect}" unless args.empty?
+        if @miss_count >= @max_missing
+          ::Kernel.raise "Infinite loop: #{name}, #{args}"
+        end
+        
+        @miss_count = @miss_count + 1
+        ::Kernel.raise "No block allowed." if blok
+        headers['args'] = args
         
         path = '/' + [ @prefix, name ].map(&:to_s).join('/') + '/'
         app = ::Checked::Arch.new( path, headers ) 

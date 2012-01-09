@@ -1,44 +1,38 @@
 
-describe "DSL :demand" do
+describe "Named :demand!" do
   
-  it 'must be equivalent to: Demand.new(target)' do
+  it 'must use name in errors' do
     should.raise(Checked::Demand::Failed) {
-      BOX.demand( [] ).not_empty!
-    }.message.should == "Array, [], can't be empty."
+      BOX.demand!("Test Val", :a ).nil!
+    }.message.should == "Test Val, :a, must be nil."
+  end
+  
+end # === describe Named :demand
+
+describe "DSL :demand!" do
+  
+  it 'must raise error when demand fails.' do
+    should.raise(Checked::Demand::Failed) {
+      BOX.demand!( [] ).nil!
+    }.message.should == "Array, [], must be nil."
     
   end
   
 end # === describe :demand
 
-describe "demand a!" do
+describe "demand be!" do
   
   before do
     @fail = Checked::Demand::Failed
-    @d = lambda { |val, k|
-      d = Checked::Demand.new(val)
-      d.a! k
-      d.target
-    }
   end
 
   it 'must fail if invalid class' do
     should.raise(@fail) {
-      @d.call('', Symbol)
-    }.message.should.include 'can only be of class/module: Symbol'
+      BOX.demand!([]).one_of!(Symbol)
+    }.message.should == "Array, [], can only be of class/module: Symbol"
   end
   
 end # === describe demand a! (certain class)
-
-describe "Named :demand" do
-  
-  it 'must be equivalent to: Demand.new(name, target)' do
-    should.raise(Checked::Demand::Failed) {
-      BOX.demand("Test Val", [] )
-      .not_empty!
-    }.message.should == "Test Val, [], can't be empty."
-  end
-  
-end # === describe Named :demand
 
 
 describe "demand :symbols!" do

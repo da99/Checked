@@ -16,7 +16,7 @@ require "Checked/Base/Arch"
   }
 }
 
-%w{ Arrays Hashs Strings File_Paths }.each { |k|
+%w{ Vars Arrays Hashs Strings File_Paths }.each { |k|
   Checked::Arch.use Checked::Demand.const_get(:"#{k}")
 }
   
