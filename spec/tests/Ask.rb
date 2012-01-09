@@ -106,3 +106,26 @@ describe "ask empty?" do
   
   
 end # === describe Ask Strings
+
+# ============================
+# ============================ VARS
+# ============================
+
+describe "var! :respond_to?" do
+  
+  it 'returns true if it responds to methods' do
+    BOX.var!( [] ).respond_to?(:[], :to_s, :pop)
+    .should == true
+  end
+  
+  it 'returns false if it does not to at least one method' do
+    BOX.var!( [] ).respond_to?(:[], :to_s, :keys)
+    .should == false
+  end
+  
+  it 'returns false if arg list is empty' do
+    BOX.var!( [] ).respond_to?
+    .should == false
+  end
+  
+end # === describe var! :respond_to?

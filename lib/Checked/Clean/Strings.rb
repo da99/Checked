@@ -1,104 +1,109 @@
 
 module Checked
   class Clean
-    module Mods
-      module Strings
+    class Strings
 
-        def self.apply? d
-          d.target.is_a?(String) ||
-            d.target.is_a?(StringIO)
-        end
+      include Clean::Base
 
-        def self.on_apply d
-          case d.target
-          when StringIO
-            d.target.rewind
-            d.target= d.target.readlines
-          else
-            # Do nothing.
-          end
-        end
+      namespace '/string!'
 
-        def untar
-          target
-          .sub(/\.tar\.gz$/, '')
-          .sub(/\.tar/, '')
-        end
+      before_these_methods
+      def strip_string
+         target.strip
+      end
 
-        def file_names matcher
-          target.strip.split.select { |word| word[matcher] }
-        end 
+      route
+      def untar
+        target
+        .sub(/\.tar\.gz$/, '')
+        .sub(/\.tar/, '')
+      end
 
-        def file_names_by_ext ext
-          names = file_names(ext)
-          bases = names.map { |s|
-            s.sub(%r!#{ext}$!, '')
-          }
+      route
+      def file_names 
+        ( target.strip.split.select { |word| word[*args] } )
+      end 
 
-          names.zip bases 
-        end
+      route
+      def file_names_by_ext 
+        names = CHECK.string!(target).file_names(*args)
+        bases = names.map { |s|
+          s.sub(%r!#{ext}$!, '')
+        }
 
-        def shell 
-          target
-          .strip
-          .split("\n")
-          .map(&:strip)
-          .reject { |line| line.empty? }
-          .join(' && ')
-        end
+         names.zip( bases )
+      end
 
-        def chop_ext
-          target.sub /\.[^\.]+$/, ''
-        end
+      route
+      def shell 
+         target
+        .strip
+        .split("\n")
+        .map(&:strip)
+        .reject { |line| line.empty? }
+        .join(' && ')
+      end
 
-        def ruby_name
-          c = ::Checked::Clean.new( File.basename( target ) ) 
-          c.< :chop_rb
-          c.target
-        end
+      route
+      def chop_ext
+         target.sub /\.[^\.]+$/, ''
+      end
 
-        def chop_rb
-          target.sub %r!\.rb$!, ''
-        end
+      route
+      def ruby_name
+         CHECK.string!( File.basename( target ) ).chop_rb
+      end
 
-        def chop_slash_r
-          target.gsub "\r", ''
-        end
+      route
+      def chop_rb
+         target.sub %r!\.rb$!, '' 
+      end
 
-        def os_stardard
-          chop_slash_r.strip
-        end
+      route
+      def chop_slash_r
+        target.gsub "\r", ''
+      end
 
-        def file_names matcher
-          strip.split.select { |word| word[matcher] }
-        end
+      route
+      def os_stardard
+        CHECK.string!(target).chop_slash_r.strip
+      end
 
-        def file_names_by_ext  ext
-          names = file_names(ext)
-          bases = names.map { |s|
-            s.sub(%r!#{ext}$!, '')
-          }
+      route
+      def file_names 
+        target.split.select { |word| word[*args] }
+      end
 
-          names.zip bases
-        end
+      route
+      def file_names_by_ext  
+        names = CHECK.string!(target).file_names(*args)
+        bases = names.map { |s|
+          s.sub(%r!#{ext}$!, '')
+        }
 
-        def to_single
-          target.gsub( /s\Z/, '' )
-        end
+        names.zip bases
+      end
 
-        def to_plural
-          target.to_single + 's'
-        end
+      route
+      def to_single
+        target.gsub( /s\Z/, '' )
+      end
 
-        def to_class_name
-          target.split('_').map(&:capitalize).join('_')
-        end
+      route
+      def to_plural
+        target.to_single + 's'
+      end
 
-        def to_camel_case
-          target.split('_').map(&:capitalize).join
-        end
+      route
+      def to_class_name
+        target.split('_').map(&:capitalize).join('_')
+      end
 
-      end # === module Strings
-    end # === module Mods
+      route
+      def to_camel_case
+        target.split('_').map(&:capitalize).join
+      end
+
+    end # === class Strings
   end # === class Clean
 end # === module Checked

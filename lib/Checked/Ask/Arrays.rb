@@ -11,19 +11,17 @@ module Checked
       route
       def symbols?
         return false if target.empty?
-        answ = target.all? { |val| val.is_a? Symbol }
-        
-        body! answ
+        target.all? { |val| val.is_a? Symbol }
       end 
       
       route
       def include? 
-        body! target.include?(*args)
+        target.include?(*args)
       end
 
       route
       def exclude? 
-        body! !target.include?(*args)
+        !target.include?(*args)
       end
       
     end # === class Arrays

@@ -4,6 +4,11 @@ module Checked
 
     include Uni_Arch::Base
     
+    after_method
+    def save_last_response
+      request.response.body= request.response.last
+    end
+
     def target_klass
       klass = self.class.name.split('::').last.sub(%r!s/Z!, '')
       if klass == 'Var'
@@ -31,10 +36,6 @@ module Checked
       end
       
       target.class.name.gsub('_', ' ')
-    end
-
-    def body! val
-      request.response.body= val
     end
     
     def args
