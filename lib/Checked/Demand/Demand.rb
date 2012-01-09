@@ -1,7 +1,6 @@
 
 
 module Checked
-
   class Demand
 
     Failed = Class.new(RuntimeError)
@@ -38,10 +37,11 @@ module Checked
 
     end # === module Base
     
-    include Base
+    def initialize *args
+      raise "Demand not allowed to be used."
+    end
     
   end # === class Demand
-  
 end # === module Checked
 
 

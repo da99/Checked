@@ -1,25 +1,38 @@
 
 
 module Checked
-class Ask
-module Mods
-module Arrays
-  
-  def self.apply?(d)
-    d.target.is_a?(Array)
-  end
+  class Ask
+    class Arrays
 
-  def symbols?
-    valid! target, :array!
-    return false if target.empty?
-    target.all? { |val| val.is_a? Symbol }
-  end 
-  
-  def excludes? matcher
-    !target.includes?(matcher)
-  end
-  
-end # === module Arrays
-end # === module Mods
-end # === class Ask
+      include Ask::Base
+
+      namespace '/array!'
+
+      before
+      def print_path
+        puts request.path
+      end
+
+      route
+      def symbols?
+        return false if target.empty?
+        answ = target.all? { |val| val.is_a? Symbol }
+        
+        body! answ
+      end 
+      
+      route
+      def includes? 
+        body! target.include?(*args)
+      end
+
+      route
+      def excludes? 
+        body! !target.include?(*args)
+      end
+      
+    end # === class Arrays
+
+
+  end # === class Ask
 end # === class Checked

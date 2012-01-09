@@ -4,7 +4,7 @@ module Checked
       
       include Demand::Base
 
-      namespace '/demand/file_path/'
+      namespace '/file_path!'
       
       before
       def validate

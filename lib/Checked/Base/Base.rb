@@ -33,6 +33,14 @@ module Checked
       target.class.name.gsub('_', ' ')
     end
 
+    def body! val
+      request.response.body= val
+    end
+    
+    def args
+      request.headers.args
+    end
+
     #
     # ::Checked::Demand::Arrays => demand
     # ::Checked::Clean::Arrays  => clean

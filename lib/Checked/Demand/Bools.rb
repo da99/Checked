@@ -4,7 +4,7 @@ module Checked
         
       include Demand::Base
 
-      namespace '/demand/bool'
+      namespace '/bool!'
 
       before
       def validate

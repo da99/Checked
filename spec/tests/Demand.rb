@@ -16,8 +16,8 @@ describe "demand :symbols!" do
   
 end # === describe Demand for Arrays
 
-# ============================
-# ============================ ARRAYS
+# ============================ 
+# ============================ BOOLS
 # ============================
 
 describe "demand :bool!" do

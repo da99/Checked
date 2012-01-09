@@ -6,11 +6,11 @@ module Checked
     class Obj < BasicObject
       
       attr_reader :prefix, :headers
-      def initialize action, klass, name, val
-        @prefix = "#{action}/#{klass}"
-        @headers = { 'check_name' => name, 'check_target' => val }
+      def initialize prefix, name, val
+        @prefix      = prefix
+        @headers     = { 'check_name' => name, 'check_target' => val }
         @max_missing = 4
-        @miss_count = 0
+        @miss_count  = 0
       end
       
       def method_missing name, *args, &blok

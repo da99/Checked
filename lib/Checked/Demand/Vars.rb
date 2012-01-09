@@ -4,7 +4,7 @@ module Checked
       
       include Demand::Base
       
-      namespace '/demand/var/'
+      namespace '/var!'
 
       route
       def either! 

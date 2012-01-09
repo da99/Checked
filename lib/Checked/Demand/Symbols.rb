@@ -5,7 +5,7 @@ module Checked
 
       include Demand::Base
 
-      namespace '/demand/symbol'
+      namespace '/symbol!'
       
       before
       def check

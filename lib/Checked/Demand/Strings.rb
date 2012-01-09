@@ -5,7 +5,7 @@ module Checked
 
       include Demand::Base
 
-      namespace '/demand/string'
+      namespace '/string!'
       
       before
       def validate

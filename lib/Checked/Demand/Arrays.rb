@@ -4,7 +4,7 @@ module Checked
 
       include Demand::Base
 
-      namespace '/demand/array/'
+      namespace '/array!'
       
       before
       def validate_target_class

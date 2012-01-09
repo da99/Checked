@@ -8,17 +8,17 @@ module Checked
       eval %~
         def #{klass}! *args
           raise "No block allowed here." if block_given?
-          check_it( 'demand', '#{klass}', *args )
+          check_it( '#{klass}!', *args )
         end
       
         def #{klass}? *args
           raise "No block allowed here." if block_given?
-          check_it( 'ask', '#{klass}', *args )
+          check_it( 'ask', *args )
         end
       
         def #{klass} *args
           raise "No block allowed here." if block_given?
-          check_it( 'clean', '#{klass}', *args )
+          check_it( 'clean',  *args )
         end
       ~
     }
@@ -28,9 +28,9 @@ module Checked
 
     # ============= Ask ================
 
-    def check_it action, klass, *args
+    def check_it namespace, *args
       args.unshift(nil) if args.size == 1
-      ::Checked::DSL::Obj.new( action, klass, *args )
+      ::Checked::DSL::Obj.new( namespace, *args )
     end
 
     def _main_class_ unk

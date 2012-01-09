@@ -4,7 +4,7 @@ module Checked
       
       include Demand::Base
 
-      namespace '/demand/hash/'
+      namespace '/hash!'
 
       before
       def validate_target_class
