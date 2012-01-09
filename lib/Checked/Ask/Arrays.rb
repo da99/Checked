@@ -4,6 +4,7 @@ module Checked
   class Ask
     class Arrays
 
+      include Uni_Arch::Base
       include Ask::Base
 
       namespace '/array!'

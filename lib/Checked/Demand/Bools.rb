@@ -2,12 +2,12 @@ module Checked
   class Demand
     class Bools
         
+      include Uni_Arch::Base
       include Demand::Base
-
       namespace '/bool!'
 
-      before
-      def validate
+      route
+      def check!
         fail!("...must be either of TrueClass or FalseClass.") unless [TrueClass, FalseClass].include?(target.class)
       end
       

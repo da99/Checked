@@ -3,12 +3,12 @@ module Checked
   class Demand
     class Symbols
 
+      include Uni_Arch::Base
       include Demand::Base
-
       namespace '/symbol!'
       
-      before
-      def validate
+      route
+      def check!
         case target
         when Symbol
         else

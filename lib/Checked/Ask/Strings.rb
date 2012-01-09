@@ -1,27 +1,28 @@
 
 module Checked
   class Ask
-      class Strings
+    class Strings
 
-        include Ask::Base
-        
-        namespace '/string!'
+      include Uni_Arch::Base
+      include Ask::Base
 
-        route
-        def empty?
-          target.strip.empty?
-        end
+      namespace '/string!'
 
-        route
-        def include? 
-          !!target[*args]
-        end
+      route
+      def empty?
+        target.strip.empty?
+      end
 
-        route
-        def exclude? 
-          !target[*args]
-        end
+      route
+      def include? 
+        !!target[*args]
+      end
 
-      end # === class Strings
+      route
+      def exclude? 
+        !target[*args]
+      end
+
+    end # === class Strings
   end # === class Ask
 end # === module Checked

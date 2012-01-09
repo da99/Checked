@@ -3,12 +3,12 @@ module Checked
   class Demand
     class Strings
 
+      include Uni_Arch::Base
       include Demand::Base
-
       namespace '/string!'
       
-      before
-      def validate
+      route
+      def check!
         case target
         when String
         when StringIO

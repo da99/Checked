@@ -3,6 +3,7 @@ module Checked
   class Ask
     class Vars
       
+      include Uni_Arch::Base
       include Ask::Base
 
       namespace '/var!'

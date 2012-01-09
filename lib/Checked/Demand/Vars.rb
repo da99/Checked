@@ -2,8 +2,8 @@ module Checked
   class Demand
     class Vars
       
+      include Uni_Arch::Base
       include Demand::Base
-      
       namespace '/var!'
 
       route

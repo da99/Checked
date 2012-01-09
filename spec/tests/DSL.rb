@@ -28,4 +28,21 @@ describe "Array!" do
     .message.should.match %r!Symbol, :a, is not an Array.!
   end
   
+end # === describe Array!
+
+
+
+describe "File_Path!" do
+  
+  it 'returns a stripped string' do
+    BOX.File_Path!(" ~/ ").should.be == File.expand_path("~/")
+  end
+  
+  it 'raise Demand::Failed if not a string' do
+    lambda {
+      BOX.File_Path!(:something)
+    }.should.raise(Checked::Demand::Failed)
+    .message.should.match %r!Symbol, :something, must be a String!
+  end
+  
 end # === describe String!

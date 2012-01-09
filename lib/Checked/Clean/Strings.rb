@@ -3,6 +3,7 @@ module Checked
   class Clean
     class Strings
 
+      include Uni_Arch::Base
       include Clean::Base
 
       namespace '/string!'

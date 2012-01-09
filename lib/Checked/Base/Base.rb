@@ -2,8 +2,6 @@ module Checked
 
   module Base
 
-    include Uni_Arch::Base
-
     CHECK = begin
               o = Object.new
               o.extend Checked::DSL

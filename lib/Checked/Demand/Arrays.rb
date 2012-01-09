@@ -2,12 +2,12 @@ module Checked
   class Demand
     class Arrays
 
+      include Uni_Arch::Base
       include Demand::Base
-
       namespace '/array!'
       
-      before
-      def validate_target_class
+      route
+      def check!
         fail! "...is not an Array." unless array?(target)
       end
 

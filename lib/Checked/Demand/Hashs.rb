@@ -2,12 +2,12 @@ module Checked
   class Demand
     class Hashs
       
+      include Uni_Arch::Base
       include Demand::Base
-
       namespace '/hash!'
 
-      before
-      def validate_target_class
+      route
+      def check!
         fail!("...must be a Hash") unless hash?(target)
       end
 

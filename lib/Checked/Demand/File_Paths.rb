@@ -2,12 +2,12 @@ module Checked
   class Demand
     class File_Paths
       
+      include Uni_Arch::Base
       include Demand::Base
-
       namespace '/file_path!'
       
-      before
-      def validate
+      route
+      def check!
         fail!('...must be a String.') unless target.is_a?(String)
         
         strip_target
@@ -18,7 +18,7 @@ module Checked
 
       route
       def hostname!
-        matches_only! %r![\dA-Za-z_-]!
+        fail!("...has invalid characters: #{$1.inspect}") if target[ %r!([^\dA-Za-z_-]+)! ]
       end
 
       route
@@ -54,7 +54,7 @@ module Checked
       # fs_path => File system object path
       # 
       def fs_path?
-        request.path[%r!(_|/)(dir|file)[^a-zA-Z]+\Z!]
+        request.path[%r!(_|/)(dir|file|check)[^a-zA-Z]+\Z!]
       end
 
     end # === class File_Addresses

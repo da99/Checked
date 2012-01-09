@@ -4,7 +4,7 @@ module Checked
     
     # ============ Demand ==============
     
-    %w{ String Array Hash }.each { |name|
+    %w{ String Array File_Path Hash }.each { |name|
       eval %~
         def #{name}!( *args )
           #{name.downcase}!(*args).check!

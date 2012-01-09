@@ -4,16 +4,11 @@ module Checked
   class Demand
 
     Failed = Class.new(RuntimeError)
-    
+
     module Base
       
       include Checked::Base
-        
-      route "/!w!!/check!/"
-      def check!
-        # do nothing
-      end
-    
+      
       def err_msg msg = "...is invalid."
         message = if msg.strip[ %r!^\.\.\.! ]
                     msg.sub('...', '').strip

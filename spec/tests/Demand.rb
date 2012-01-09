@@ -107,7 +107,7 @@ describe "Demand file_path! not_file!" do
     .message.should.match %r!bashrc", can't be a file!
   end
 
-  it 'must return expand path' do
+  it 'must return expanded path' do
     path = "~/,RANDOM"
     target = File.expand_path(path)
     BOX.file_path!(path).not_file!.should.be == target
