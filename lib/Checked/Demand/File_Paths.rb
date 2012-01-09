@@ -15,7 +15,7 @@ module Checked
         validate_format!
         expand_target if fs_path?
       end
-      
+
       route
       def hostname!
         matches_only! %r![\dA-Za-z_-]!

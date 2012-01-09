@@ -3,11 +3,12 @@ module Checked
   module Base
 
     include Uni_Arch::Base
-    
-    after_method
-    def save_last_response
-      request.response.body= request.response.last
-    end
+
+    CHECK = begin
+              o = Object.new
+              o.extend Checked::DSL
+              o
+            end
 
     def target_klass
       klass = self.class.name.split('::').last.sub(%r!s/Z!, '')
