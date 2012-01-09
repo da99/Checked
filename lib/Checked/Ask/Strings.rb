@@ -1,26 +1,27 @@
 
 module Checked
-class Ask
-module Mods
-module Strings
+	class Ask
+			class Strings
 
-  def self.apply? d
-    d.target.is_a?(String)
-  end
-  
-  def empty?
-    target.strip.empty?
-  end
-  
-  def includes? matcher
-    !!target[matcher]
-  end
-  
-  def excludes? matcher
-    !includes?(matcher)
-  end
+				include Ask::Base
+				
+				namespace '/string!'
 
-end # === module Strings
-end # === module Mods
-end # === class Ask
+				route
+				def empty?
+					body! target.strip.empty?
+				end
+
+				route
+				def include? 
+					body! !!target[*args]
+				end
+
+				route
+				def exclude? 
+					body! !target[*args]
+				end
+
+			end # === class Strings
+	end # === class Ask
 end # === module Checked

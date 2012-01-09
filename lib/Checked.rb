@@ -21,7 +21,7 @@ require "Checked/Base/Arch"
 }
   
 
-%w{ Arrays }.each { |k|
+%w{ Arrays Strings }.each { |k|
   Checked::Arch.use Checked::Ask.const_get(:"#{k}")
 }
 

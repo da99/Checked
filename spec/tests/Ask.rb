@@ -65,33 +65,44 @@ end # === describe array! symbols?
 # ============================ STRINGS
 # ============================
 
-# describe "string! :includes?" do
-#   
-#   it "returns true if string contains regexp." do
-#     BOX.array!(": a").includes?(/: a/)
-#     .should.be == true
-#   end
-#   
-#   it "returns false if string excludes element" do
-#     Checked::Ask.new(" :a ") { |a|
-#       a.< :includes?, / :b /
-#     }.true?.should.be == false
-#   end
-#   
-# end # === describe Ask :includes
+describe "string! :include?" do
+  
+  it "returns true if string contains regexp." do
+    BOX.string!(": a").include?(/: a/)
+    .should.be == true
+  end
+  
+  it "returns false if string does not element" do
+    BOX.string!(" :a ").include?(/ :b /) 
+    .should.be == false
+  end
+  
+end # === describe Ask :includes
+
+describe "string! :exclude?" do
+  
+  it "returns true if string excludes regexp." do
+    BOX.string!(": a").exclude?(/: b/)
+    .should.be == true
+  end
+  
+  it "returns false if string does not excludes element" do
+    BOX.string!(" :a ").exclude?(/ :a /) 
+    .should.be == false
+  end
+  
+end # === describe Ask :excludes
 
 
-# describe "ask empty?" do
-#   
-#   behaves_like 'Ask'
-# 
-#   it "returns true if string is :empty? after applying :strip" do
-#     ask?(" \\n ", :empty?).should.be === true
-#   end
-#   
-#   it "returns false if string is not :empty? after applying :strip" do
-#     ask?(" n ", :empty?).should.be === false
-#   end
-#   
-#   
-# end # === describe Ask Strings
+describe "ask empty?" do
+  
+  it "returns true if string is :empty? after applying :strip" do
+    BOX.string!(" \n ").empty?.should.be === true
+  end
+  
+  it "returns false if string is not :empty? after applying :strip" do
+    BOX.string!(" n ").empty?.should.be === false
+  end
+  
+  
+end # === describe Ask Strings
