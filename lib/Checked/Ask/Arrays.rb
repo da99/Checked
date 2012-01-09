@@ -8,11 +8,6 @@ module Checked
 
       namespace '/array!'
 
-      before
-      def print_path
-        puts request.path
-      end
-
       route
       def symbols?
         return false if target.empty?
@@ -22,12 +17,12 @@ module Checked
       end 
       
       route
-      def includes? 
+      def include? 
         body! target.include?(*args)
       end
 
       route
-      def excludes? 
+      def exclude? 
         body! !target.include?(*args)
       end
       

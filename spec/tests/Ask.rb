@@ -4,20 +4,42 @@
 # ============================ ARRAYS
 # ============================
 
-describe "array! :includes?" do
+describe "array! :include?" do
   
   it "returns true if array contains element." do
-    BOX.array!([:a]).includes?(:a)
+    BOX.array!([:a]).include?(:a)
     .should.be == true
   end
   
   it "returns false if array does not contain element" do
-    BOX.array!([:a]).includes?(:b)
+    BOX.array!([:a]).include?(:b)
     .should.be == false
   end
   
 end # === describe Ask :includes
 
+describe "array! :exclude?" do
+  
+  it "returns true if array excludes element." do
+    BOX.array!([:a]).exclude?(:b)
+    .should.be == true
+  end
+  
+  it "returns false if array does contains element" do
+    BOX.array!([:a]).exclude?(:a)
+    .should.be == false
+  end
+  
+end # === describe Ask :exclude
+
+describe "array! symbols?" do
+  
+  it 'returns true if all elements are symbols' do
+    BOX.array!([:a, :b]).symbols?
+    .should.be == true
+  end
+  
+end # === describe array! symbols?
 # 
 # describe "Ask :excludes" do
 #   
