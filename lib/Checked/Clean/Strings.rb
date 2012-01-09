@@ -25,13 +25,13 @@ module Checked
       end 
 
       route
-      def file_names_by_ext 
+      def file_names_by_ext  
         names = CHECK.string!(target).file_names(*args)
         bases = names.map { |s|
           s.sub(%r!#{ext}$!, '')
         }
 
-         names.zip( bases )
+        names.zip bases
       end
 
       route
@@ -67,21 +67,6 @@ module Checked
       route
       def os_stardard
         CHECK.string!(target).chop_slash_r.strip
-      end
-
-      route
-      def file_names 
-        target.split.select { |word| word[*args] }
-      end
-
-      route
-      def file_names_by_ext  
-        names = CHECK.string!(target).file_names(*args)
-        bases = names.map { |s|
-          s.sub(%r!#{ext}$!, '')
-        }
-
-        names.zip bases
       end
 
       route

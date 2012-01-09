@@ -11,17 +11,16 @@ require "Checked/Base/Arch"
   require "Checked/#{klass}/#{klass}"
   
   Dir.glob(File.join File.dirname(__FILE__), "Checked/#{klass}/*.rb").each { |path|
+    
+    # Require the file.
     path =~ %r!lib/Checked/(.+)/(.+)\.rb!
     require( "Checked/#{$1}/#{$2}" ) if $1 && $2
+    
+    # Set up routes.
+    if klass != $2
+      Checked::Arch.use Checked.const_get(:"#{klass}").const_get(:"#{$2}")
+    end
   }
 }
-
-%w{ Arrays Bools Hashs Strings Symbols File_Paths Vars }.each { |k|
-  Checked::Arch.use Checked::Demand.const_get(:"#{k}")
-}
   
-
-%w{ Arrays Strings Vars }.each { |k|
-  Checked::Arch.use Checked::Ask.const_get(:"#{k}")
-}
 
