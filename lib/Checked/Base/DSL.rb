@@ -4,10 +4,18 @@ module Checked
     
     # ============ Demand ==============
     
-    %w{ String Array File_Path Hash }.each { |name|
+    %w{ String Array File_Path Hash Bool }.each { |name|
       eval %~
         def #{name}!( *args )
           #{name.downcase}!(*args).check!
+        end
+      ~
+    }
+    
+    %w{ True False }.each { |bool|
+      eval %~
+        def #{bool}! *args
+          bool!(*args).#{bool.downcase}!
         end
       ~
     }
