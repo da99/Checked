@@ -4,17 +4,19 @@ module Checked
         
       include Demand::Base
 
-      route '/demand/bool/'
+      namespace '/demand/bool'
+
+      before
       def validate
-        fail!("...must be a Boolean.") unless [TrueClass, FalseClass].include?(target.class)
+        fail!("...must be either of TrueClass or FalseClass.") unless [TrueClass, FalseClass].include?(target.class)
       end
       
-      route  '/demand/true/'
+      route
       def true!
         fail! "...must be true (TrueClass)." unless target.class == TrueClass
       end
       
-      route  '/demand/false/'
+      route 
       def false!
         fail! "...must be false (FalseClass)." unless target.class == FalseClass
       end

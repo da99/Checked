@@ -17,6 +17,52 @@ describe "demand :symbols!" do
 end # === describe Demand for Arrays
 
 # ============================
+# ============================ ARRAYS
+# ============================
+
+describe "demand :bool!" do
+  
+  it 'must raise Demand::Failed if not a boolean' do
+    should.raise(Checked::Demand::Failed) {
+      BOX.bool!( "Answer", :false ).check!
+    }.message.should.be == "Answer, :false, must be either of TrueClass or FalseClass."
+  end
+  
+end # === describe demand :bool!
+
+describe "demand :bool! :true!" do
+  
+  it 'must pass validation if true' do
+    should.not.raise(Checked::Demand::Failed) {
+      BOX.bool!( "Answer", 1 === 1 ).true!
+    }
+  end
+  
+  it 'must raise Demand::Failed if not true' do
+    should.raise(Checked::Demand::Failed) {
+      BOX.bool!( "ANSW", false ).true!
+    }.message.should.be == "ANSW, false, must be true (TrueClass)."
+  end
+  
+end # === describe demand :bool!
+
+describe "demand :bool! :false!" do
+  
+  it 'must pass validation if false' do
+    should.not.raise(Checked::Demand::Failed) {
+      BOX.bool!( "Comparison", 1 === 2 ).false!
+    }
+  end
+  
+  it 'must raise Demand::Failed if not false' do
+    should.raise(Checked::Demand::Failed) {
+      BOX.bool!( "ANSW", 1 == 1 ).false!
+    }.message.should.be == "ANSW, true, must be false (FalseClass)."
+  end
+  
+end # === describe demand :bool!
+
+# ============================
 # ============================ FILE_PATHS
 # ============================
 
