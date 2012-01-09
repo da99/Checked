@@ -2,7 +2,15 @@
 # ============================ ARRAYS
 # ============================
 
-describe "demand :symbols!" do
+describe "array! check!" do
+  
+  it 'must return array' do
+    BOX.array!([:a, :b]).check!.should == [:a, :b]
+  end
+  
+end # === describe array! check!
+
+describe "array! :symbols!" do
 
   it 'must require Array be non-empty.' do
     should.raise(Checked::Demand::Failed) {

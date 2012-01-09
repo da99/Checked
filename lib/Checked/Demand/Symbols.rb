@@ -8,7 +8,7 @@ module Checked
       namespace '/symbol!'
       
       before
-      def check
+      def validate
         case target
         when Symbol
         else

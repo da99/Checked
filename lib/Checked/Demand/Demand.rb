@@ -9,7 +9,7 @@ module Checked
       
       include Checked::Base
         
-      route
+      route "/!w!!/check!/"
       def check!
         # do nothing
       end
