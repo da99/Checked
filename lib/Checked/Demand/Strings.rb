@@ -65,6 +65,12 @@ module Checked
         new_content!
       end
 
+      route
+      def hostname!
+        puts target
+        fail!("...has invalid characters: #{$1.inspect}") if target[ %r!([^\dA-Za-z_-]+)! ]
+      end
+
     end # === class String
   end # === class Demand
 end # === module Checked

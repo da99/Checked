@@ -115,17 +115,6 @@ describe "Demand file_path! not_file!" do
   
 end # === describe Demand not_file!
 
-describe "Demand file_path! :hostname!" do
-  
-  it 'must not contain whitespace' do
-    lambda {
-      BOX.file_path!('some name').hostname!
-    }.should.raise(Checked::Demand::Failed)
-    .message.should.be == 'String, "some name", has invalid characters: " "'
-  end
-  
-end # === describe Demand :hostname!
-
 
 # ============================
 # ============================ HASHS
@@ -173,6 +162,23 @@ describe "Demand string! :file_content!" do
   end
   
 end # === describe Demand :file_content!
+
+describe "Demand file_path! :hostname!" do
+  
+  it 'must not contain whitespace' do
+    lambda {
+      BOX.string!('some name').hostname!
+    }.should.raise(Checked::Demand::Failed)
+    .message.should.be == 'String, "some name", has invalid characters: " "'
+  end
+  
+  it 'validates for a valid hostname' do
+    lambda {
+      BOX.string!('bdrm').hostname!
+    }.should.not.raise(Checked::Demand::Failed)
+  end
+  
+end # === describe Demand :hostname!
 
 # ============================
 # ============================ SYMBOLS

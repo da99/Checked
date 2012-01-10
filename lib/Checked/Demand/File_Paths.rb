@@ -17,11 +17,6 @@ module Checked
       end
 
       route
-      def hostname!
-        fail!("...has invalid characters: #{$1.inspect}") if target[ %r!([^\dA-Za-z_-]+)! ]
-      end
-
-      route
       def not_dir!
         if File.directory?(target)
           fail! "...can't be an existing directory."
