@@ -93,7 +93,7 @@ describe "Demand file_path! not_dir!" do
     lambda { 
       BOX.file_path!("~/").not_dir!
     }.should.raise(Checked::Demand::Failed)
-    .message.should.match %r!~/", can't be an existing directory.!
+    .message.should.match %r!, can't be an existing directory.!
   end
   
 end # === describe Demand not_dir!
@@ -104,7 +104,7 @@ describe "Demand file_path! not_file!" do
     lambda { 
       BOX.file_path!("~/.bashrc").not_file!
     }.should.raise(Checked::Demand::Failed)
-    .message.should.match %r!bashrc", can't be a file!
+    .message.should.match %r!bashrc., can't be a file!
   end
 
   it 'must return expanded path' do

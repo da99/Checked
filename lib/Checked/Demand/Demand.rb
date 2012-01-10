@@ -16,7 +16,12 @@ module Checked
                     msg
                   end
       
-        @err_msg || "#{target_name}, #{original_target.inspect}, #{message}"
+        t = if original_target != target
+              "#{original_target.inspect} (#{target})"
+            else
+              original_target.inspect
+            end
+        @err_msg || "#{target_name}, #{t}, #{message}"
       end
 
       def err_msg= msg
