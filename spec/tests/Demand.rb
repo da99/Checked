@@ -189,6 +189,21 @@ describe "Demand symbol! check!" do
   
 end # === describe Demand symbol! check!
 
+describe "symbol! :in! array" do
+  
+  it 'raises Demand::Failed if not in array' do
+    lambda { BOX.symbol!(:a).in!([:b, :c]) }
+    .should.raise(Checked::Demand::Failed)
+    .message.should.be == "Symbol, :a, must be in array: [:b, :c]"
+  end
+
+  it 'validates if symbols is in array.' do
+    lambda { BOX.symbol!(:a).in!([:a, :b, :c]) }
+    .should.not.raise(Checked::Demand::Failed)
+  end
+  
+end # === describe symbol! :in! array
+
 # ============================
 # ============================ VARS
 # ============================

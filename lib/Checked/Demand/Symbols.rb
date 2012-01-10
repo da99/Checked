@@ -15,6 +15,14 @@ module Checked
           fail! '...must be a Symbol.'
         end
       end
+      
+      route 
+      def in!
+        arr = request.headers.args.first
+        fail! "...must be in array: #{arr}" unless arr.include?(target)
+      end # === def in!
+      
+      
 
     end # === class Symbols
   end # === class Demand

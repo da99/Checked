@@ -53,11 +53,16 @@ module Checked
       def file_read!
         request.response.body= target.gsub("\r\n", "\n")
       end
+      
+      route
+      def new_content!
+        not_empty!   
+        file_read!
+      end
 
       route
       def file_content! 
-        not_empty!   
-        file_read!
+        new_content!
       end
 
     end # === class String
