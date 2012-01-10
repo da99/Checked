@@ -17,8 +17,7 @@ module Checked
       end
       
       route 
-      def in!
-        arr = request.headers.args.first
+      def in! arr
         fail! "...must be in array: #{arr}" unless arr.include?(target)
       end # === def in!
       
