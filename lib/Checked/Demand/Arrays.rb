@@ -1,78 +1,75 @@
-module Checked
+class Checked
   class Demand
-    class Arrays
+    class Arrays < Sinatra::Base
 
-      include Uni_Arch::Base
-      include Demand::Base
-      namespace '/array!'
+      include Checked::Arch
+      map '/array!'
       
-      route
+      get
       def check!
-        fail! "...is not an Array." unless array?(target)
+				demand \
+					array?(return!), \
+					"...is not an Array."
       end
 
-      route
+      get
       def no_nils!
-        if target.include?(nil)
-          fail!("...can't contain nils.")
-        end
+        demand \
+					return!.include?(nil), \
+          "...can't contain nils."
       end
 
-      route
+      get
       def no_empty_strings!
-        target.each { |s| 
-
-          if s.respond_to?(:rewind) 
-            s.rewind
-          end
+        return!.each { |memo,s| 
 
           final = if s.respond_to?(:readlines)
+										s.rewind
                     s.readlines
                   else
                     s
                   end
 
-          if !final.is_a?(::String)
-            fail!("Array contains unknown class: #{final.inspect}")
-          end
-          
-          if final.is_a?(String) && final.strip.empty?
-            fail!("...can't contain empty strings.")
-          end
+					demand \
+						final.is_a?(::String), \
+						"...can't contain unknown class: #{final.inspect}"
+						
+					demand \
+						final.is_a?(::String) && final.strip.empty?, \
+            "...can't contain empty strings."
+						
         }
+				return!
       end
 
-      route
+      get
       def symbols!
-        not_empty!
-        if !target.all? { |v| v.is_a?(Symbol) }
-          fail! "...contains a non-symbol."
-        end
+        Checked::App.new.get!("/array!/not_empty!", target_name, return!)
+        demand \
+					return!.all? { |v| v.is_a?(Symbol) }, \
+          "...contains a non-symbol."
       end
 
-      route
+      get
       def include! 
-        return true if target.include?(matcher)
-        fail!("...must contain: #{matcher.inspect}")
+				demand return!.include?(matcher), \
+					"...must contain: #{matcher.inspect}"
       end
 
-      route
+      get
       def exclude! 
-        raise_e = val.include?(matcher)
-        return true unless raise_e
-        fail!("...can't contain #{matcher.inspect}")
+				demand val.include?(matcher), "...can't contain #{matcher.inspect}"
       end
 
-      route
+      get
       def matches_only! 
-        arr = target.reject { |val| val == matcher }
-        fail!( "...invalid elements: #{arr.inspect}" ) if !arr.empty?
+        demand \
+					return!.reject { |val| val == matcher }.empty?, \
+					"...invalid elements: #{arr.inspect}"
       end
       
-      private
-
 
     end # === class Arrays
   end # === class Demand
-end # === module Checked
+end # === class Checked
 
