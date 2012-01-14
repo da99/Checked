@@ -20,6 +20,11 @@ class Checked
       end
 
       get
+      def empty!
+        demand return!.empty?, "...must be empty."
+      end
+
+      get
       def not_empty!
         demand !return!.empty?, "...can't be empty."
       end

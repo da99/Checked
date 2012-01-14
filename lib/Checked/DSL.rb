@@ -1,20 +1,33 @@
-# class Object
-#   
-#   def Checked
-#     @sin_arch ||= Checked::Obj.new
-#   end
-# 
-#   def Checked_applys?
-#     (instance_variable_defined?(:@sin_arch) && Checked().on?)
-#   end
-# 
-#   def method_missing name, *args
-#     return( super ) unless Checked_applys?
-#     raise "Unknown block." if block_given?
-#     Checked().get(name, *args)
-#   end
-# 
-# end # === class Object
+class Object
+  
+  def Checked
+    @sin_arch ||= begin
+                    o = ::Checked::Obj.new
+                    o.value = self
+                    o
+                  end
+  end
+
+  def Checked_applys?
+    (instance_variable_defined?(:@sin_arch) && Checked().on?)
+  end
+
+  def method_missing meth_name, *args
+    return(super) if !Checked_applys?
+    
+    # Keep count after :Checked_applys? call
+    #   because sometimes value is frozen.
+    @count ||= 1
+    @count += 1
+    return(super) if @count > 2 
+    
+    raise "Unknown block." if block_given?
+    result = Checked().get!(meth_name, *args)
+    @count = 1
+    result
+  end
+
+end # === class Object
 
 class Checked
 
@@ -22,18 +35,21 @@ class Checked
 
     module Base
       
-      attr_accessor :namespace, :name
+      attr_accessor :map, :name, :value, :app
+      
       def initialize
         off!
-        self.namespace = nil
-        self.name      = nil
+        self.map  = nil
+        self.name = nil
       end
       
       def on?
         @on
       end
       
-      def on!
+      def on! new_map
+        raise ArgumentError, "Map value unacceptable: #{new_map.inspect}" unless new_map
+        self.map = new_map
         @on = true
       end
       
@@ -45,8 +61,9 @@ class Checked
         @on = false
       end
       
-      def get name, *args
-        Checked.new.get!("/#{namespace}/#{name}/", *args)
+      def get! meth_name, *args
+        self.app = Checked::App.new
+        app.get!("/#{map}/#{meth_name}", 'name'=>name, 'value'=>value, 'args'=>args)
       end
       
     end # === module Base
@@ -84,6 +101,30 @@ class Checked
       def hash? val
         respond_to_all?( val, :[], :keys, :values )
       end
+      
+      def array! val
+        demand array?(val), 'must be array.'
+      end
+      
+      def hash! val
+        demand val, 'Must be a hash.'
+      end
+      
+      def string! val
+        demand val.is_a?(String), 'Must be a string.'
+      end
+      
+      def bool! val
+        demand val.is_a?(TrueClass) || val.is_a?(FalseClass), 'Must be a boolean.'
+      end
+      
+      def true! val
+        demand val === true, 'Must be true (TrueClass).'
+      end
+      
+      def false! val
+        demand val === false, 'Must be false (FalseClass).'
+      end
 
       def keys! h, *args
         missing = args.select { |k| !h.has_key?(k) }
@@ -96,6 +137,30 @@ class Checked
       def not_empty! val
         demand !val.empty?, "...can't be empty."
       end
+      
+      def Check! ns, *name_and_or_val
+        name, val = case name_and_or_val.size
+                    when 1
+                      [ nil, name_and_or_val.first ]
+                    when 2
+                      name_and_or_val
+                    else
+                      raise ArgumentError, "Unknown values for name/value: #{name_and_or_val.inspect}"
+                    end
+        
+        send ns, val if respond_to?(ns)
+        val.Checked.on! ns
+        val.Checked.name = name
+        val
+      end
+      
+      %w{ Array Hash String }.each { |t|
+        eval %~
+          def #{t}! *args
+            Check! "#{t.downcase}!", *args
+          end
+        ~
+      }
 
     end # === module Ruby
   
