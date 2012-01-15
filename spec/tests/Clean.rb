@@ -74,3 +74,24 @@ describe "Clean :os_stardard" do
   
 end # === describe
 
+describe "Clean :file_names" do
+  
+  behaves_like :racked_dsl
+
+  it 'should return files based on matcher' do
+    String!(" file.rb file0.txt file1.php ").file_names(/.rb/)
+    .should == %w{ file.rb }
+  end
+  
+end # === describe Clean :file_names
+
+describe "Clean :file_names_by_ext" do
+  
+  behaves_like :racked_dsl
+
+  it 'should return file names zipped with file names without extension' do
+    String!(" file.rb file.factor file0.txt file1.php ").file_names_by_ext('.factor')
+    .should == %w{ file.factor }.zip(%w{ file })
+  end
+  
+end # === describe Clean :file_names_by_ext

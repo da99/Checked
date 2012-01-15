@@ -25,14 +25,14 @@ class Checked
 
       get
       def file_names 
-        ( return!.split.select { |word| word[*args] } )
+        ( return!.split.select { |word| word[matcher] } )
       end 
 
       get
       def file_names_by_ext  
-        names = CHECK.string!(return!).file_names(*args)
-        bases = names.map { |s|
-          s.sub(%r!#{ext}$!, '')
+        names = file_names
+        bases = file_names.map { |s|
+          s.sub(%r!#{matcher}$!, '')
         }
 
         names.zip bases
