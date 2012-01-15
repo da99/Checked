@@ -37,10 +37,16 @@ class Checked
                    end
     end
 
+    private
+
     def strip_target
       return! return!.strip
     end
 
+    def not_empty_args!
+      not_empty! args_hash['args']
+    end
+      
     def fail! raw_msg
       msg = if raw_msg['...'] == 0
               raw_msg.sub '...', target_name

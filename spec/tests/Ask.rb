@@ -90,9 +90,10 @@ describe "Var! :respond_to_all?" do
     .should == false
   end
   
-  it 'returns false if arg list is empty' do
-    Var!( [] ).respond_to_all?
-    .should == false
+  it 'raises Demand::Failed if arg list is empty' do
+    lambda{ Var!( [] ).respond_to_all? }
+    .should.raise(Checked::Demand::Failed)
+    .message.should.match %r!can't be empty!
   end
   
 end # === describe var! :respond_to?
@@ -112,9 +113,10 @@ describe "Var! :respond_to_any?" do
     .should == false
   end
   
-  it 'returns false if arg list is empty' do
-    Var!( [] ).respond_to_any?
-    .should == false
+  it 'raises Demand::Failed if arg list is empty' do
+    lambda{ Var!( [] ).respond_to_any? }
+    .should.raise(Checked::Demand::Failed)
+    .message.should.match %r!can't be empty!
   end
   
 end # === describe var! :respond_to?

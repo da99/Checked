@@ -9,20 +9,22 @@ class Checked
 
       get
       def respond_to_all?
-        return false if args_hash['args'].empty?
+        a = not_empty_args!
 
-        args_hash['args'].all? { |a|
+        a.all? { |a|
           return!.respond_to? a
         }
       end
 
       get
       def respond_to_any?
-        args_hash['args'].any? { |a|
+        a = not_empty_args!
+        
+        a.any? { |a|
           return!.respond_to? a
         }
       end
-
+      
     end # === class Vars
   end # === class Ask
 end # === class Checked
