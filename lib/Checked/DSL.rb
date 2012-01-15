@@ -73,7 +73,7 @@ class Checked
       end
       
       def get! meth_name, *args
-        self.app ||= Checked::App.new
+        self.app = Checked::App.new
         app.get!("/#{map}/#{meth_name}", 'name'=>name, 'value'=>value, 'args'=>args)
       end
       

@@ -26,5 +26,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rake'
   s.add_development_dependency 'bacon'
   s.add_development_dependency 'Bacon_Colored'
-  
 end

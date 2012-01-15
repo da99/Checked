@@ -1,33 +1,36 @@
 
-module Checked
+class Checked
   class Clean
-    class Strings
+    class Strings < Sinatra::Base
 
-      include Uni_Arch::Base
-      include Clean::Base
+      include Checked::Arch
 
-      namespace '/string!'
+      map '/string!'
 
-      before_these_methods
-      def strip_string
-         target.strip
+      before '/:name' 
+      def strip_val 
+        return!( return!.strip ) if strippable_route?
+      end
+      
+      def strippable_route?
+        params['name'][%r![^\?\!]\Z!] && !%w{chop_slash_r}.include?(params['name'])
       end
 
-      route
+      get
       def untar
-        target
+        return!
         .sub(/\.tar\.gz$/, '')
         .sub(/\.tar/, '')
       end
 
-      route
+      get
       def file_names 
-        ( target.strip.split.select { |word| word[*args] } )
+        ( return!.split.select { |word| word[*args] } )
       end 
 
-      route
+      get
       def file_names_by_ext  
-        names = CHECK.string!(target).file_names(*args)
+        names = CHECK.string!(return!).file_names(*args)
         bases = names.map { |s|
           s.sub(%r!#{ext}$!, '')
         }
@@ -35,61 +38,60 @@ module Checked
         names.zip bases
       end
 
-      route
+      get
       def shell 
-         target
-        .strip
+         return!
         .split("\n")
         .map(&:strip)
         .reject { |line| line.empty? }
         .join(' && ')
       end
 
-      route
+      get
       def chop_ext
-         target.sub /\.[^\.]+$/, ''
+         return!.sub /\.[^\.]+$/, ''
       end
 
-      route
+      get
       def ruby_name
-         CHECK.string!( File.basename( target ) ).chop_rb
+        File.basename chop_rb
       end
 
-      route
+      get
       def chop_rb
-         target.sub %r!\.rb$!, '' 
+         return!.sub %r!\.rb$!, '' 
       end
 
-      route
+      get
       def chop_slash_r
-        target.gsub "\r", ''
+        return!.gsub "\r", ''
       end
 
-      route
+      get
       def os_stardard
-        CHECK.string!(target).chop_slash_r.strip
+        chop_slash_r
       end
 
-      route
+      get
       def to_single
-        target.gsub( /s\Z/, '' )
+        return!.gsub( /s\Z/, '' )
       end
 
-      route
+      get
       def to_plural
-        target.to_single + 's'
+        return!.to_single + 's'
       end
 
-      route
+      get
       def to_class_name
-        target.split('_').map(&:capitalize).join('_')
+        return!.split('_').map(&:capitalize).join('_')
       end
 
-      route
+      get
       def to_camel_case
-        target.split('_').map(&:capitalize).join
+        return!.split('_').map(&:capitalize).join
       end
 
     end # === class Strings
   end # === class Clean
-end # === module Checked
+end # === class Checked

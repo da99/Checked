@@ -35,6 +35,6 @@ def ruby_e cmd
   end
 end
 
-Dir.glob('spec/tests/A*.rb').each { |file|
+Dir.glob('spec/tests/*.rb').each { |file|
   require File.expand_path(file.sub('.rb', '')) if File.file?(file)
 }
