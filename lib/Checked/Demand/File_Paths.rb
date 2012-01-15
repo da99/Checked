@@ -8,10 +8,10 @@ class Checked
       
       get
       def check!
-        demand string?(return!), '...must be a String.'
+        string! return!
         
         return! return!.strip
-        demand !return!.empty?, '...is_empty.'
+        demand !return!, !return!.empty?, '...is_empty.'
         
         validate_format!
         expand_target if File.exists?(File.expand_path return!)

@@ -15,7 +15,7 @@ class Checked
       a = args_hash['args']
       t = args_hash['value']
 
-      demand array?(a), ':args must be an array.' 
+      demand a, array?(a), ':args must be an array.' 
       
       request.env['original_target'] = t
       

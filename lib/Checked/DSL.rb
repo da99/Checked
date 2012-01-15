@@ -90,10 +90,24 @@ class Checked
   
     module Ruby
 
-      def demand val, bool, raw_msg
-        msg = raw_msg.sub(%r!\A\.\.\.!, "#{val.class}, #{val.inspect}, ")
-        fail!(msg) unless bool
-        bool
+      def demand *args
+        case args.size
+        when 2
+          bool, raw_msg = args
+          msg = raw_msg.sub(%r!\A\.\.\.!, "#{target_name || return!.class}, #{return!.inspect}, ")
+          fail!(msg) unless bool
+          return!
+        when 3
+          val, bool, raw_msg = args
+          if respond_to?(:return!) && return! == val
+            return demand( bool, raw_msg )
+          end
+          msg = raw_msg.sub(%r!\A\.\.\.!, "#{val.class}, #{val.inspect}, ")
+          fail!(msg) unless bool
+          val
+        else
+          raise ArgumentError, "Too many arguments: #{args.inspect}"
+        end
       end
 
       def fail! msg

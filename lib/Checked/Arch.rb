@@ -41,18 +41,6 @@ class Checked
       return! return!.strip
     end
 
-    def demand *args
-      case args.size
-      when 2
-        bool, raw_msg = args
-        msg = raw_msg.sub(%r!\A\.\.\.!, "#{target_name || return!.class}, #{return!.inspect}, ")
-        super(return!, bool, msg)
-        return!
-      else
-        super
-      end
-    end
-
     def fail! raw_msg
       msg = if raw_msg['...'] == 0
               raw_msg.sub '...', target_name

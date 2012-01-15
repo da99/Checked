@@ -3,9 +3,6 @@ require File.expand_path('spec/helper')
 require "Bacon_Colored"
 require 'Checked'
 
-def puts! *args
-  puts *args
-end
 
 shared :ruby_dsl do
   before { extend Checked::DSL::Ruby }
@@ -38,6 +35,6 @@ def ruby_e cmd
   end
 end
 
-Dir.glob('spec/tests/*.rb').each { |file|
+Dir.glob('spec/tests/D*.rb').each { |file|
   require File.expand_path(file.sub('.rb', '')) if File.file?(file)
 }
