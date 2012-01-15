@@ -76,7 +76,7 @@ end # === describe array! symbols?
 # ============================ VARS
 # ============================
 
-describe "var! :respond_to_all?" do
+describe "Var! :respond_to_all?" do
   
   behaves_like :racked_dsl
   
@@ -92,6 +92,28 @@ describe "var! :respond_to_all?" do
   
   it 'returns false if arg list is empty' do
     Var!( [] ).respond_to_all?
+    .should == false
+  end
+  
+end # === describe var! :respond_to?
+
+
+describe "Var! :respond_to_any?" do
+  
+  behaves_like :racked_dsl
+  
+  it 'returns true if it responds to any methods' do
+    Var!( [] ).respond_to_any?(:[], :jetsons, :jump_it)
+    .should == true
+  end
+  
+  it 'returns false if it does not respond to all methods' do
+    Var!( [] ).respond_to_any?(:jetson, :to_flintstones, :thundar)
+    .should == false
+  end
+  
+  it 'returns false if arg list is empty' do
+    Var!( [] ).respond_to_any?
     .should == false
   end
   
