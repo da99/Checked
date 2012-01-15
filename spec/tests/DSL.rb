@@ -89,6 +89,21 @@ end # === describe array! check!
 # ============================ Racked
 # ============================
 
+describe "Stripped!" do
+  
+  behaves_like :racked_dsl
+  
+  it "returns true if string is :empty? after applying :strip" do
+    Stripped!(" \n ").empty?.should.be === true
+  end
+  
+  it "returns false if string is not :empty? after applying :strip" do
+    Stripped!(" n ").empty?.should.be === false
+  end
+  
+  
+end # === describe Stripped!
+
 describe "String!" do
   
   behaves_like :racked_dsl

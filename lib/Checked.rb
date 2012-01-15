@@ -45,7 +45,7 @@ end # === class Checked
 
 
 
-%w{ Demand  }.each { |klass|
+%w{ Demand Ask }.each { |klass|
   
   require "Checked/#{klass}/#{klass}"
   

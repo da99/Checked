@@ -198,6 +198,11 @@ class Checked
         ~
       }
 
+      def Stripped! *args
+        v = String!(*args)
+        String!(v.strip)
+      end
+
       def Check! ns, *name_and_or_val
         name, val = case name_and_or_val.size
                     when 1

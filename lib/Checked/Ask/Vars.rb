@@ -1,22 +1,28 @@
 
-module Checked
+class Checked
   class Ask
-    class Vars
+    class Vars < Sinatra::Base
       
-      include Uni_Arch::Base
-      include Ask::Base
+      include Checked::Arch
 
-      namespace '/var!'
+      map '/var!'
 
-      route
-      def respond_to?
-        answ = args.map { |a|
-          target.respond_to? a
-        }.uniq == [true]
-        
-        answ
+      get
+      def respond_to_all?
+        return false if args_hash['args'].empty?
+
+        args_hash['args'].all? { |a|
+          return!.respond_to? a
+        }
+      end
+
+      get
+      def respond_to_any?
+        args_hash['args'].any? { |a|
+          return!.respond_to? a
+        }
       end
 
     end # === class Vars
   end # === class Ask
-end # === module Checked
+end # === class Checked

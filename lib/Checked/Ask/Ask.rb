@@ -1,9 +1,7 @@
 
-module Checked
+class Checked
   class Ask
     module Base
-      
-      include ::Checked::Base
       
       def records
         @records ||= []
@@ -18,4 +16,4 @@ module Checked
     end
 
   end # === class Ask
-end # === module Checked
+end # === class Checked

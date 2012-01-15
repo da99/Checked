@@ -1,28 +1,27 @@
 
 
-module Checked
+class Checked
   class Ask
-    class Arrays
+    class Arrays < Sinatra::Base
 
-      include Uni_Arch::Base
-      include Ask::Base
+      include Checked::Arch
 
-      namespace '/array!'
+      map '/array!'
 
-      route
+      get
       def symbols?
-        return false if target.empty?
-        target.all? { |val| val.is_a? Symbol }
+        return false if return!.empty?
+        return!.all? { |val| val.is_a? Symbol }
       end 
       
-      route
+      get
       def include? 
-        target.include?(*args)
+        return!.include?(*args_hash['args'])
       end
 
-      route
+      get
       def exclude? 
-        !target.include?(*args)
+        !return!.include?(*args_hash['args'])
       end
       
     end # === class Arrays

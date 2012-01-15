@@ -11,7 +11,7 @@ class Checked
         string! return!
         
         return! return!.strip
-        demand !return!, !return!.empty?, '...is_empty.'
+        not_empty! return!
         
         validate_format!
         expand_target if File.exists?(File.expand_path return!)

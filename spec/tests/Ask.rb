@@ -71,74 +71,27 @@ end # === describe array! symbols?
 # ============================ STRINGS
 # ============================
 
-describe "string! :include?" do
-  
-  behaves_like :racked_dsl
-
-  it "returns true if string contains regexp." do
-    String!(": a").include?(/: a/)
-    .should.be == true
-  end
-  
-  it "returns false if string does not element" do
-    String!(" :a ").include?(/ :b /) 
-    .should.be == false
-  end
-  
-end # === describe Ask :includes
-
-describe "string! :exclude?" do
-  
-  behaves_like :racked_dsl
-  
-  it "returns true if string excludes regexp." do
-    String!(": a").exclude?(/: b/)
-    .should.be == true
-  end
-  
-  it "returns false if string does not excludes element" do
-    String!(" :a ").exclude?(/ :a /) 
-    .should.be == false
-  end
-  
-end # === describe Ask :excludes
-
-
-describe "ask empty?" do
-  
-  behaves_like :racked_dsl
-  
-  it "returns true if string is :empty? after applying :strip" do
-    String!(" \n ").empty?.should.be === true
-  end
-  
-  it "returns false if string is not :empty? after applying :strip" do
-    String!(" n ").empty?.should.be === false
-  end
-  
-  
-end # === describe Ask Strings
 
 # ============================
 # ============================ VARS
 # ============================
 
-describe "var! :respond_to?" do
+describe "var! :respond_to_all?" do
   
   behaves_like :racked_dsl
   
   it 'returns true if it responds to methods' do
-    Var!( [] ).respond_to?(:[], :to_s, :pop)
+    Var!( [] ).respond_to_all?(:[], :to_s, :pop)
     .should == true
   end
   
   it 'returns false if it does not to at least one method' do
-    Var!( [] ).respond_to?(:[], :to_s, :keys)
+    Var!( [] ).respond_to_all?(:[], :to_s, :keys)
     .should == false
   end
   
   it 'returns false if arg list is empty' do
-    Var!( [] ).respond_to?
+    Var!( [] ).respond_to_all?
     .should == false
   end
   

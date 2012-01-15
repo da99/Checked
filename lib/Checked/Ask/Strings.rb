@@ -1,28 +1,12 @@
 
-module Checked
+class Checked
   class Ask
-    class Strings
+    class Strings < Sinatra::Base
 
-      include Uni_Arch::Base
-      include Ask::Base
+      include Checked::Arch
 
-      namespace '/string!'
-
-      route
-      def empty?
-        target.strip.empty?
-      end
-
-      route
-      def include? 
-        !!target[*args]
-      end
-
-      route
-      def exclude? 
-        !target[*args]
-      end
+      map '/string!'
 
     end # === class Strings
   end # === class Ask
-end # === module Checked
+end # === class Checked
