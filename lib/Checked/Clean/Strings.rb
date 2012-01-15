@@ -4,16 +4,19 @@ class Checked
     class Strings < Sinatra::Base
 
       include Checked::Arch
+      
+      private
+      def strippable_route?
+        params['name'][%r![^\?\!]\Z!] && !%w{chop_slash_r}.include?(params['name'])
+      end
+
+      public
 
       map '/string!'
 
       before '/:name' 
       def strip_val 
         return!( return!.strip ) if strippable_route?
-      end
-      
-      def strippable_route?
-        params['name'][%r![^\?\!]\Z!] && !%w{chop_slash_r}.include?(params['name'])
       end
 
       get
