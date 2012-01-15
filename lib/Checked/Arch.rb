@@ -1,7 +1,7 @@
 class Checked
 
   module Arch
-    include DSL::Ruby
+    include DSL::Racked
 
     def self.included klass
       klass.send :include, Sin_Arch::Arch
