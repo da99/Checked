@@ -6,7 +6,7 @@ class Checked
     def initialize *args
       raise "Demand not allowed to be used."
     end
-  end # === class Demand	
+  end # === class Demand  
 end # === class Checked
 
 

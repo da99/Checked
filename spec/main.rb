@@ -3,11 +3,18 @@ require File.expand_path('spec/helper')
 require "Bacon_Colored"
 require 'Checked'
 
-class Box
-  include Checked::DSL
+def puts! *args
+  puts *args
 end
 
-BOX = Box.new
+shared :ruby_dsl do
+  before { extend Checked::DSL::Ruby }
+end
+
+shared :racked_dsl do
+  before { extend Checked::DSL::Racked }
+end
+
 
 FOLDER = ("/tmp/Checked_Test")
 %x! mkdir -p #{FOLDER}!

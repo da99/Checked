@@ -1,48 +1,47 @@
-module Checked
+class Checked
   class Demand
-    class File_Paths
+    class File_Paths < Sinatra::Base
       
-      include Uni_Arch::Base
-      include Demand::Base
-      namespace '/file_path!'
+      INVALID_CHARS = %r!([^a-zA-Z0-9\.\_\-\/~,]+)!
+      include Checked::Arch
+      map '/file_path!'
       
-      route
+      get
       def check!
-        fail!('...must be a String.') unless target.is_a?(String)
+        demand string?(return!), '...must be a String.'
         
-        strip_target
-        not_empty!
+        return! return!.strip
+        demand !return!.empty?, '...is_empty.'
+        
         validate_format!
-        expand_target if fs_path?
+        expand_target if File.exists?(File.expand_path return!)
+        
+        return! 
       end
 
-      route
+      get
       def not_dir!
-        if File.directory?(target)
-          fail! "...can't be an existing directory."
-        end
+        demand !File.directory?(return!), "...can't be an existing directory."
       end
 
-      route
+      get
       def not_file!
-        fail! "...can't be a file." if File.file?(target)
+        demand !File.file?(return!), "...can't be a file."
       end
 
-      route
+      get
       def dir!
-        fail! "...must be an existing directory." unless File.directory?(target)
+        demand File.directory?(return!), "...must be an existing directory." 
       end
 
       private 
 
       def validate_format!
-        if target[%r!([^a-zA-Z0-9\.\_\-\/~,]+)!]
-          fail! "...has invalid characters: #{$1.inspect}"
-        end
+        demand !( return![INVALID_CHARS] ), "...has invalid characters: #{$1.inspect}"
       end
       
       def expand_target
-        request.response.body= File.expand_path(target)
+        return! File.expand_path(return!)
       end
 
       # 
@@ -54,5 +53,5 @@ module Checked
 
     end # === class File_Addresses
   end # === class Demand
-end # === module Checked
+end # === class Checked
 

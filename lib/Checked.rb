@@ -23,6 +23,8 @@ class Checked
       request.env['target_name'] ||= begin
                                        if t.respond_to?(:english_name)
                                          t.english_name 
+                                       elsif !args_hash['name'].to_s.strip.empty?
+                                         args_hash['name'].strip
                                        else
                                          t.class.name.gsub('_', ' ')
                                        end

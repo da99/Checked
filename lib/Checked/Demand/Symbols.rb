@@ -1,28 +1,22 @@
 
-module Checked
+class Checked
   class Demand
-    class Symbols
+    class Symbols < Sinatra::Base
 
-      include Uni_Arch::Base
-      include Demand::Base
-      namespace '/symbol!'
+      include Checked::Arch
+      map '/symbol!'
       
-      route
+      get
       def check!
-        case target
-        when Symbol
-        else
-          fail! '...must be a Symbol.'
-        end
+        demand return!.is_a?(Symbol), '...must be a symbol.'
       end
       
-      route 
-      def in! arr
-        fail! "...must be in array: #{arr}" unless arr.include?(target)
+      get 
+      def in! 
+        arr = args_hash['args'].first
+        demand arr.include?(return!), "...must be in array: #{arr}"
       end # === def in!
       
-      
-
     end # === class Symbols
   end # === class Demand
-end # === module Checked
+end # === class Checked

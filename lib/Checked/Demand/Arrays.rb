@@ -7,9 +7,7 @@ class Checked
       
       get
       def check!
-        demand \
-          array?(return!), \
-          "...is not an Array."
+        array! return!
       end
 
       get

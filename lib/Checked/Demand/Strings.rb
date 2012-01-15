@@ -1,77 +1,72 @@
 
-module Checked
+class Checked
   class Demand
-    class Strings
+    class Strings < Sinatra::Base
 
-      include Uni_Arch::Base
-      include Demand::Base
-      namespace '/string!'
+      include Checked::Arch
+      map '/string!'
       
-      route
+      get
       def check!
-        case target
+        case return!
         when String
+          
+          return!
         when StringIO
           target.rewind
-          request.response.body= target.readlines
+          return! target.readlines
           target.rewind
+          
+          return!
         else
-          fail! "...must be a String or StringIO"
+          demand false, "...must be a String or StringIO."
         end
       end
 
-      route
+      get
       def include!
-        included = target[matcher]
-        return true if included
-        fail!("...must contain: #{matcher.inspect}")
+        demand return![matcher], "...must contain: #{matcher.inspect}"
       end
 
-      route
+      get
       def exclude! matcher
-        raise_e = val[matcher]
-        return true unless raise_e
-        fail!("...can't contain #{matcher.inspect}")
+        demand !(return![matcher]), "...can't contain #{matcher.inspect}"
       end
 
-      route
+      get
       def matches_only!
-        str = target.gsub(matcher, '')
-        if !str.empty?
-          fail!( "...has invalid characters: #{str.inspect}" ) 
-        end
+        invalid = return!.gsub(matcher, '')
+        demand invalid.empty?, "...has invalid characters: #{str.inspect}" 
       end
 
-      route
+      get
       def not_empty!
-        if target.strip.empty? 
-          fail!("...can't be empty.") 
-        end
+        demand !(return!.strip.empty?), "...can't be empty."
       end
 
-      route
+      get
       def file_read!
-        request.response.body= target.gsub("\r\n", "\n")
+        return!.gsub("\r\n", "\n")
       end
       
-      route
+      get
       def new_content!
         not_empty!   
         file_read!
       end
 
-      route
+      get
       def file_content! 
         new_content!
       end
 
-      route
+      get
       def hostname!
-        puts target
-        fail!("...has invalid characters: #{$1.inspect}") if target[ %r!([^\dA-Za-z_-]+)! ]
+        invalid = return![ %r!([^\dA-Za-z_-]+)! ]
+        demand !invalid, "...has invalid characters: #{$1.inspect}"
       end
 
     end # === class String
   end # === class Demand
-end # === module Checked
+end # === class Checked
 

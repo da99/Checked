@@ -17,7 +17,7 @@ class Checked
 
     def matcher
       @matcher ||= begin
-                    m = args.first
+                    m = args_hash['args'].first
                     if !m
                       raise Sin_Arch::Missing_Argument, "Missing argument for matcher."
                     end
@@ -41,9 +41,16 @@ class Checked
       return! return!.strip
     end
 
-    def demand bool, msg
-      super
-      return!
+    def demand *args
+      case args.size
+      when 2
+        bool, raw_msg = args
+        msg = raw_msg.sub(%r!\A\.\.\.!, "#{target_name || return!.class}, #{return!.inspect}, ")
+        super(return!, bool, msg)
+        return!
+      else
+        super
+      end
     end
 
     def fail! raw_msg

@@ -6,13 +6,15 @@
 
 describe "array! :include?" do
   
+  behaves_like :racked_dsl
+
   it "returns true if array contains element." do
-    BOX.array!([:a]).include?(:a)
+    Array!([:a]).include?(:a)
     .should.be == true
   end
   
   it "returns false if array does not contain element" do
-    BOX.array!([:a]).include?(:b)
+    Array!([:a]).include?(:b)
     .should.be == false
   end
   
@@ -20,13 +22,15 @@ end # === describe Ask :includes
 
 describe "array! :exclude?" do
   
+  behaves_like :racked_dsl
+
   it "returns true if array excludes element." do
-    BOX.array!([:a]).exclude?(:b)
+    Array!([:a]).exclude?(:b)
     .should.be == true
   end
   
   it "returns false if array does contains element" do
-    BOX.array!([:a]).exclude?(:a)
+    Array!([:a]).exclude?(:a)
     .should.be == false
   end
   
@@ -34,8 +38,10 @@ end # === describe Ask :exclude
 
 describe "array! symbols?" do
   
+  behaves_like :racked_dsl
+
   it 'returns true if all elements are symbols' do
-    BOX.array!([:a, :b]).symbols?
+    Array!([:a, :b]).symbols?
     .should.be == true
   end
   
@@ -67,13 +73,15 @@ end # === describe array! symbols?
 
 describe "string! :include?" do
   
+  behaves_like :racked_dsl
+
   it "returns true if string contains regexp." do
-    BOX.string!(": a").include?(/: a/)
+    String!(": a").include?(/: a/)
     .should.be == true
   end
   
   it "returns false if string does not element" do
-    BOX.string!(" :a ").include?(/ :b /) 
+    String!(" :a ").include?(/ :b /) 
     .should.be == false
   end
   
@@ -81,13 +89,15 @@ end # === describe Ask :includes
 
 describe "string! :exclude?" do
   
+  behaves_like :racked_dsl
+  
   it "returns true if string excludes regexp." do
-    BOX.string!(": a").exclude?(/: b/)
+    String!(": a").exclude?(/: b/)
     .should.be == true
   end
   
   it "returns false if string does not excludes element" do
-    BOX.string!(" :a ").exclude?(/ :a /) 
+    String!(" :a ").exclude?(/ :a /) 
     .should.be == false
   end
   
@@ -96,12 +106,14 @@ end # === describe Ask :excludes
 
 describe "ask empty?" do
   
+  behaves_like :racked_dsl
+  
   it "returns true if string is :empty? after applying :strip" do
-    BOX.string!(" \n ").empty?.should.be === true
+    String!(" \n ").empty?.should.be === true
   end
   
   it "returns false if string is not :empty? after applying :strip" do
-    BOX.string!(" n ").empty?.should.be === false
+    String!(" n ").empty?.should.be === false
   end
   
   
@@ -113,18 +125,20 @@ end # === describe Ask Strings
 
 describe "var! :respond_to?" do
   
+  behaves_like :racked_dsl
+  
   it 'returns true if it responds to methods' do
-    BOX.var!( [] ).respond_to?(:[], :to_s, :pop)
+    Var!( [] ).respond_to?(:[], :to_s, :pop)
     .should == true
   end
   
   it 'returns false if it does not to at least one method' do
-    BOX.var!( [] ).respond_to?(:[], :to_s, :keys)
+    Var!( [] ).respond_to?(:[], :to_s, :keys)
     .should == false
   end
   
   it 'returns false if arg list is empty' do
-    BOX.var!( [] ).respond_to?
+    Var!( [] ).respond_to?
     .should == false
   end
   

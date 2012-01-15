@@ -1,29 +1,24 @@
-module Checked
+class Checked
   class Demand
-    class Hashs
+    class Hashs < Sinatra::Base
       
-      include Uni_Arch::Base
-      include Demand::Base
-      namespace '/hash!'
+      
+      include Checked::Arch
+      map '/hash!'
 
-      route
+      get
       def check!
-        fail!("...must be a Hash") unless hash?(target)
+        demand hash?(return!), "...is not a Hash."
       end
 
-      route
+      get
       def symbol_keys!
-        keys = target.keys
-
-        if keys.all? { |k| k.is_a?(Symbol) }
-          # do nothing
-        else
-          fail! '...must have all symbol keys.'
-        end
+        all_syms = return!.keys.all? { |k| k.is_a?(Symbol) }
+        demand all_syms, '...must have all symbol keys.'
       end
 
     end # === class Hashs
   end # === class Demand
-end # === module Checked
+end # === class Checked
 
 

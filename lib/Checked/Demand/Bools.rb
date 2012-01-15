@@ -1,28 +1,30 @@
-module Checked
+class Checked
   class Demand
-    class Bools
+    class Bools < Sinatra::Base
         
-      include Uni_Arch::Base
-      include Demand::Base
-      namespace '/bool!'
+      include Checked::Arch
+      map '/bool!'
 
-      route
+      get
       def check!
-        fail!("...must be either of TrueClass or FalseClass.") unless [TrueClass, FalseClass].include?(target.class)
+        is_bool = [TrueClass, FalseClass].include?(return!.class)
+        demand is_bool, "...must be either of TrueClass or FalseClass."
       end
       
-      route
+      get
       def true!
-        fail! "...must be true (TrueClass)." unless target.class == TrueClass
+        is_true = return!.class == TrueClass
+        demand is_true, "...must be true (TrueClass)." 
       end
       
-      route 
+      get 
       def false!
-        fail! "...must be false (FalseClass)." unless target.class == FalseClass
+        is_false = return!.class == FalseClass
+        demand is_false, "...must be false (FalseClass)." 
       end
 
     end # === class Bools
   end # === class Demand
-end # === module Checked
+end # === class Checked
         
 

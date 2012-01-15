@@ -5,18 +5,26 @@ class Checked
       include Checked::Arch
       
       map '/:type!'
-      
+
       get 
       def not_empty!
         demand !return!.empty?, "...can't be empty."
       end
 
       get 
-      def be! meth, *args
-        answer = return!.send meth, *args
-        demand answer, :bool!
-        return true if answer
-        fail!("...failed #{meth} with #{args.inspect}")
+      def be! 
+        meth, vals = args_hash['args']
+        answer = return!.send meth, *vals
+        bool! answer
+        demand answer, "...failed #{meth} with #{vals.inspect}"
+      end
+
+      get
+      def not_be! 
+        meth, vals = args_hash['args']
+        answer = return!.send(meth, *vals)
+        bool! answer
+        demand !answer, "...#{meth} should not be true with #{vals.inspect}"
       end
 
       get
@@ -29,21 +37,16 @@ class Checked
         demand !return!.empty?, "...can't be empty."
       end
 
-      get
-      def not_be! meth, *args
-        bool!
-        pass = return!.send(meth, *args)
-        demand pass, :bool!
-        return true unless pass
-        fail!("...#{meth} should not be true with #{args.inspect}")
-      end
-
-
       map '/var!' # ===============================
+      
+      get
+      def check!
+        return!
+      end
 
       get
       def either! 
-        request.headers.args.flatten.detect { |m|
+        answer = args_hash['args'].flatten.detect { |m|
           begin
             return!.send m
             true
@@ -51,47 +54,49 @@ class Checked
             false
           end
         }
+        demand answer, "...is not any: #{args_hash['args'].inspect}"
       end
 
       get
       def be!
-        rejected = request.headers.args.flatten.select { |m|
+        rejected = args_hash['args'].flatten.select { |m|
           !(return!.send m)
         }
-        fail!("...must be: #{rejected.map(&:to_s).join(', ')}") unless rejected.empty?
+        demand rejected.empty?, "...must be all of these: #{rejected.map(&:to_s).join(', ')}"
       end
       
       get
       def not_be!
-        rejected = request.headers.args.flatten.select { |m|
+        rejected = args_hash['args'].flatten.select { |m|
           !!(return!.send m)
         }
-        fail!("...must not be: #{rejected.map(&:to_s).join(', ')}") unless rejected.empty?
+        demand rejected.empty?, "...must not be: #{rejected.map(&:to_s).join(', ')}"
       end
 
       get
       def one_of! 
-        klasses = request.headers.args
-        return true if klasses.flatten.any? { |k| return!.is_a?(k) }  
-        fail! "...can only be of class/module: #{klasses.map(&:to_s).join(', ')}"
+        klasses = args_hash['args']
+        demand \
+          klasses.flatten.any? { |k| return!.is_a?(k) }, \
+          "...can only be of class/module: #{klasses.map(&:to_s).join(', ')}"
       end
 
       get
       def nil!
-        fail!("...must be nil.") unless return!.nil?
+        demand return!.nil?, "...must be nil."
       end
 
       get
       def not_nil!
-        fail!("...can't be nil.") if return!.nil?
+        demand !return!.nil?, "...can't be nil." 
       end
 
       get
       def respond_to! 
-        rejected = request.headers.args.reject { |m|
+        rejected = args_hash['args'].reject { |m|
           !return!.respond_to?(m)
         }
-        fail!("...must respond to #{rejected.inspect}") unless rejected.empty?
+        demand rejected.empty?, "...must respond to #{rejected.inspect}"
       end
 
     end # === class Vars
