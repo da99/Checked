@@ -200,7 +200,9 @@ class Checked
 
       def Stripped! *args
         v = String!(*args)
-        String!(v.strip)
+        n = v.strip
+        n.Checked<< v.Checked
+        n
       end
 
       def Check! ns, *name_and_or_val

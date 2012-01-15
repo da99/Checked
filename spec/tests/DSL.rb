@@ -101,6 +101,9 @@ describe "Stripped!" do
     Stripped!(" n ").empty?.should.be === false
   end
   
+  it 'returns string with original name' do
+    Stripped!("Test String", 'test').Checked.name.should == 'Test String'
+  end
   
 end # === describe Stripped!
 
