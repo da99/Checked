@@ -2,23 +2,28 @@
 class Checked
   class Strings
 
+    public
+
     def check!
       case return!
       when String
-
         return!
+        
       when StringIO
         target.rewind
         return! target.readlines
         target.rewind
 
         return!
+        
       else
         demand false, "...must be a String or StringIO."
       end
+      
+      return!( return!.strip )
     end
 
-    def include!
+    def include! matcher
       demand return![matcher], "...must contain: #{matcher.inspect}"
     end
 
@@ -26,13 +31,17 @@ class Checked
       demand !(return![matcher]), "...can't contain #{matcher.inspect}"
     end
 
-    def matches_only!
+    def matches_only! matcher
       invalid = return!.gsub(matcher, '')
       demand invalid.empty?, "...has invalid characters: #{str.inspect}" 
     end
 
-    def not_empty!
-      demand !(return!.strip.empty?), "...can't be empty."
+    def not_empty! *args
+      if args.empty?
+        demand !(return!.strip.empty?), "...can't be empty."
+      else
+        super
+      end
     end
 
     def file_read!

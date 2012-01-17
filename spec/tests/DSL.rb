@@ -102,7 +102,7 @@ describe "Stripped!" do
   end
   
   it 'returns string with original name' do
-    Stripped!("Test String", 'test').Checked.name.should == 'Test String'
+    Stripped!("Test String", 'test').Checked.target_name.should == 'Test String'
   end
   
 end # === describe Stripped!
@@ -111,9 +111,9 @@ describe "String!" do
   
   behaves_like :racked_dsl
   
-  it 'returns the string' do
+  it 'returns the string with same name' do
     s = 'str'
-    String!( s ).object_id.should.be == s.object_id
+    String!( 'Tester', s ).Checked.target_name.should.be == 'Tester'
   end
   
   it 'raises Demand::Failed if not a string' do

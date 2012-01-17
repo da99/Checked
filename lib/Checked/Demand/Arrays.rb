@@ -40,16 +40,16 @@ class Checked
           "...contains a non-symbol."
     end
 
-    def include! 
+    def include! matcher
       demand return!.include?(matcher), \
           "...must contain: #{matcher.inspect}"
     end
 
-    def exclude! 
+    def exclude! matcher
       demand val.include?(matcher), "...can't contain #{matcher.inspect}"
     end
 
-    def matches_only! 
+    def matches_only! matcher
       demand \
         return!.reject { |val| val == matcher }.empty?, \
           "...invalid elements: #{arr.inspect}"

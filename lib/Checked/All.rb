@@ -4,19 +4,15 @@ class Checked
 
     include Checked::Arch
 
-    def not_empty!
-      demand !return!.empty?, "...can't be empty."
-    end
-
-    def be! 
-      meth, vals = args_hash['args']
+    def be! *args
+      meth, vals = args
       answer = return!.send meth, *vals
       bool! answer
       demand answer, "...failed #{meth} with #{vals.inspect}"
     end
 
-    def not_be! 
-      meth, vals = args_hash['args']
+    def not_be! *args
+      meth, vals = args
       answer = return!.send(meth, *vals)
       bool! answer
       demand !answer, "...#{meth} should not be true with #{vals.inspect}"
@@ -26,8 +22,12 @@ class Checked
       demand return!.empty?, "...must be empty."
     end
 
-    def not_empty!
-      demand !return!.empty?, "...can't be empty."
+    def not_empty! *args
+      if args.empty?
+        demand !return!.empty?, "...can't be empty."
+      else
+        super
+      end
     end
 
   end # === class All

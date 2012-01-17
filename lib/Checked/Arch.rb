@@ -62,8 +62,8 @@ class Checked
       return! return!.strip
     end
 
-    def not_empty_args!
-      not_empty! args_hash['args']
+    def not_empty_args! *args
+      not_empty! args
     end
       
     def fail! raw_msg

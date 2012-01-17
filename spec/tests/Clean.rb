@@ -53,7 +53,7 @@ describe "Clean :chop_slash_r" do
       Hi\r\n
       Ok\r\n
     @
-    String!(string).chop_slash_r.should.be == string.gsub("\r", '')
+    String!(string).chop_slash_r.should.be == string.strip.gsub("\r", '')
   end
   
   
@@ -69,7 +69,7 @@ describe "Clean :os_stardard" do
       Hi\r\n
       Ok\r\n
     @
-    String!(string).os_stardard.should.be == string.strip.gsub("\r", '')
+    String!(string).os_stardard.should.be == string.gsub("\r", '').strip
   end
   
 end # === describe

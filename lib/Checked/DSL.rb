@@ -29,7 +29,7 @@ class Object
     result = Checked().send meth_name, *args
     @count = 1
     
-    result.Checked= Checked() if meth_name.to_s['!']
+    result.Checked= Checked() if meth_name.to_s['!'] && self.class == result.class
     result
   end
 
@@ -153,7 +153,7 @@ class Checked
       def Stripped! *args
         v = String!(*args)
         n = v.strip
-        n.Checked<< v.Checked
+        n.Checked= v.Checked
         n
       end
 

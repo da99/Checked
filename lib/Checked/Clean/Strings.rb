@@ -2,34 +2,19 @@
 class Checked
   class Strings
 
-    private
-    def strippable_route?
-      params['name'][%r![^\?\!]\Z!] && !%w{chop_slash_r}.include?(params['name'])
-    end
-
-    def strip_val 
-      return!( return!.strip ) if strippable_route?
-    end
-
-    public
-
-    def before
-      strip_val
-    end
-
     def untar
       return!
       .sub(/\.tar\.gz$/, '')
       .sub(/\.tar/, '')
     end
 
-    def file_names 
+    def file_names matcher
       ( return!.split.select { |word| word[matcher] } )
     end 
 
-    def file_names_by_ext  
-      names = file_names
-      bases = file_names.map { |s|
+    def file_names_by_ext matcher 
+      names = file_names(matcher)
+      bases = names.map { |s|
         s.sub(%r!#{matcher}$!, '')
       }
 

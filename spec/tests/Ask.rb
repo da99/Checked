@@ -20,17 +20,17 @@ describe "array! :include?" do
   
 end # === describe Ask :includes
 
-describe "array! :exclude?" do
+describe "array! :exclude_all?" do
   
   behaves_like :racked_dsl
 
   it "returns true if array excludes element." do
-    Array!([:a]).exclude?(:b)
+    Array!([:a]).exclude_all?(:b)
     .should.be == true
   end
   
   it "returns false if array does contains element" do
-    Array!([:a]).exclude?(:a)
+    Array!([:a]).exclude_all?(:a)
     .should.be == false
   end
   

@@ -156,7 +156,7 @@ describe "Demand string! :file_read!" do
   behaves_like :racked_dsl
   
   it 'returns a string with right carriage returns erased.' do
-    String!("test\r\ntest\r\n").file_content!.should == "test\ntest\n"
+    String!("test\r\ntest\r\n").file_content!.should == "test\ntest"
   end
   
 end # === describe Demand string! :file_read!

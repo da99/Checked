@@ -9,12 +9,12 @@ class Checked
       return!.all? { |val| val.is_a? Symbol }
     end 
 
-    def include? 
-      return!.include?(*args_hash['args'])
+    def include_all? *args
+      return!.include_all?(*args)
     end
 
-    def exclude? 
-      !return!.include?(*args_hash['args'])
+    def exclude_all? *args
+      !return!.detect { |v| args.include?(v) }
     end
 
   end # === class Arrays
