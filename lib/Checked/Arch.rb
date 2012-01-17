@@ -1,28 +1,47 @@
 class Checked
 
   module Arch
-    include DSL::Racked
-
+    
+    module Class_Methods
+      def map name
+        @map = name
+      end
+    end # === module Class_Methods
+    
     def self.included klass
-      klass.send :include, Sin_Arch::Arch
+      klass.extend Class_Methods
     end
     
+    include DSL::Racked
+    
+    def initialize *args
+      @target = nil
+      super
+    end
+    
+    def request
+      self
+    end
+
+    def env
+      @env ||= {}
+    end
+
+    def return! val = :return_it
+      return @target if val === :return_it
+      @target = val
+    end
+    
+    def target_name= val
+      request.env['target_name'] = val
+    end
+
     def target_name
       request.env['target_name']
     end
 
     def original_target
       request.env['original_target']
-    end
-
-    def matcher
-      @matcher ||= begin
-                    m = args_hash['args'].first
-                    if !m
-                      raise Sin_Arch::Missing_Argument, "Missing argument for matcher."
-                    end
-                    m
-                   end
     end
     
     #

@@ -1,12 +1,6 @@
 
 class Checked
-  class Ask
-    class Strings < Sinatra::Base
+  class Strings
 
-      include Checked::Arch
-
-      map '/string!'
-
-    end # === class Strings
-  end # === class Ask
+  end # === class Strings
 end # === class Checked

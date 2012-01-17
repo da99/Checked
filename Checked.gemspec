@@ -21,8 +21,6 @@ Gem::Specification.new do |s|
   s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
   s.require_paths = ["lib"]
 
-  s.add_runtime_dependency "Sin_Arch"
-  
   s.add_development_dependency 'rake'
   s.add_development_dependency 'bacon'
   s.add_development_dependency 'Bacon_Colored'

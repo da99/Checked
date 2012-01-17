@@ -1,5 +1,3 @@
-require 'Sin_Arch'
-
-class Checked < Sinatra::Base
+class Checked
   VERSION = "2.0.2"
 end

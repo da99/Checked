@@ -1,72 +1,58 @@
 
 class Checked
-  class Demand
-    class Strings < Sinatra::Base
+  class Strings
 
-      include Checked::Arch
-      map '/string!'
-      
-      get
-      def check!
-        case return!
-        when String
-          
-          return!
-        when StringIO
-          target.rewind
-          return! target.readlines
-          target.rewind
-          
-          return!
-        else
-          demand false, "...must be a String or StringIO."
-        end
-      end
+    def check!
+      case return!
+      when String
 
-      get
-      def include!
-        demand return![matcher], "...must contain: #{matcher.inspect}"
-      end
+        return!
+      when StringIO
+        target.rewind
+        return! target.readlines
+        target.rewind
 
-      get
-      def exclude! matcher
-        demand !(return![matcher]), "...can't contain #{matcher.inspect}"
+        return!
+      else
+        demand false, "...must be a String or StringIO."
       end
+    end
 
-      get
-      def matches_only!
-        invalid = return!.gsub(matcher, '')
-        demand invalid.empty?, "...has invalid characters: #{str.inspect}" 
-      end
+    def include!
+      demand return![matcher], "...must contain: #{matcher.inspect}"
+    end
 
-      get
-      def not_empty!
-        demand !(return!.strip.empty?), "...can't be empty."
-      end
+    def exclude! matcher
+      demand !(return![matcher]), "...can't contain #{matcher.inspect}"
+    end
 
-      get
-      def file_read!
-        return!.gsub("\r\n", "\n")
-      end
-      
-      get
-      def new_content!
-        not_empty!   
-        file_read!
-      end
+    def matches_only!
+      invalid = return!.gsub(matcher, '')
+      demand invalid.empty?, "...has invalid characters: #{str.inspect}" 
+    end
 
-      get
-      def file_content! 
-        new_content!
-      end
+    def not_empty!
+      demand !(return!.strip.empty?), "...can't be empty."
+    end
 
-      get
-      def hostname!
-        invalid = return![ %r!([^\dA-Za-z_-]+)! ]
-        demand !invalid, "...has invalid characters: #{$1.inspect}"
-      end
+    def file_read!
+      return!.gsub("\r\n", "\n")
+    end
 
-    end # === class String
-  end # === class Demand
+    def new_content!
+      not_empty!   
+      file_read!
+    end
+
+    def file_content! 
+      new_content!
+    end
+
+    def hostname!
+      invalid = return![ %r!([^\dA-Za-z_-]+)! ]
+      demand !invalid, "...has invalid characters: #{$1.inspect}"
+    end
+
+  end # === class String
 end # === class Checked
 

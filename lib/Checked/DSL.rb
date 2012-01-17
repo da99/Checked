@@ -1,15 +1,18 @@
 class Object
+
+  def Checked= val
+    @sin_arch = val
+    val.return! self
+    val
+  end
   
   def Checked
-    @sin_arch ||= begin
-                    o = ::Checked::Obj.new
-                    o.value = self
-                    o
-                  end
+    raise "Not defined yet." unless Checked_applys?
+    @sin_arch
   end
 
   def Checked_applys?
-    (instance_variable_defined?(:@sin_arch) && Checked().on?)
+    instance_variable_defined?(:@sin_arch)
   end
 
   def method_missing meth_name, *args
@@ -22,68 +25,15 @@ class Object
     return(super) if @count > 6 
     
     raise "Unknown block." if block_given?
-    begin
-      result = Checked().get!(meth_name, *args)
-    rescue Sin_Arch::Not_Found
-      return super
-    end
+    return super unless Checked().respond_to?(meth_name)
+    result = Checked().send meth_name, *args
     @count = 1
     
-    result.Checked.<< Checked()
+    result.Checked= Checked() if meth_name.to_s['!']
     result
   end
 
 end # === class Object
-
-class Checked
-
-  class Obj
-
-    module Base
-      
-      attr_accessor :map, :name, :value, :app
-      
-      def initialize
-        off!
-        self.map  = nil
-        self.name = nil
-      end
-      
-      def << checked
-        on! checked.map
-        self.name = checked.name
-      end
-
-      def on?
-        @on
-      end
-      
-      def on! new_map
-        raise ArgumentError, "Map value unacceptable: #{new_map.inspect}" unless new_map
-        self.map = new_map
-        @on = true
-      end
-      
-      def off?
-        !@on
-      end
-
-      def off!
-        @on = false
-      end
-      
-      def get! meth_name, *args
-        self.app = Checked::App.new
-        app.get!("/#{map}/#{meth_name}", 'name'=>name, 'value'=>value, 'args'=>args)
-      end
-      
-    end # === module Base
-    
-    include Base
-    
-  end # === class Obj
-  
-end # === class Checked
 
 class Checked
   module DSL
@@ -180,11 +130,11 @@ class Checked
       %w{ Array Bool File_Path Hash String Symbol Var }.each { |name|
         eval! %~
           def #{name}!( *args )
-            Check!( '#{name.downcase}!', *args ).check!
+            Check!( '#{name}s', *args ).check!
           end
         ~
       }
-      
+
       def demand *pars
         if pars.size == 2
           val = return!
@@ -217,9 +167,10 @@ class Checked
                       raise ArgumentError, "Unknown values for name/value: #{name_and_or_val.inspect}"
                     end
 
-        val.Checked.on! ns
-        val.Checked.name = name
-        val.Checked.get! 'check!'
+        val.Checked=Checked.const_get(ns.to_sym).new
+        val.Checked.target_name = name
+        val.Checked.return! val
+        val.Checked.check!
         val
       end
 

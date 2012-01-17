@@ -1,73 +1,61 @@
 class Checked
-  class Demand
-    class Arrays < Sinatra::Base
+  class Arrays
 
-      include Checked::Arch
-      map '/array!'
-      
-      get
-      def check!
-        array! return!
-      end
+    def check!
+      array! return!
+    end
 
-      get
-      def no_nils!
-        demand \
-          return!.include?(nil), \
+    def no_nils!
+      demand \
+        return!.include?(nil), \
           "...can't contain nils."
-      end
+    end
 
-      get
-      def no_empty_strings!
-        return!.each { |memo,s| 
+    def no_empty_strings!
+      return!.each { |memo,s| 
 
-          final = if s.respond_to?(:readlines)
-                    s.rewind
-                    s.readlines
-                  else
-                    s
-                  end
+        final = if s.respond_to?(:readlines)
+                  s.rewind
+                  s.readlines
+                else
+                  s
+                end
 
-          demand \
-            final.is_a?(::String), \
+        demand \
+          final.is_a?(::String), \
             "...can't contain unknown class: #{final.inspect}"
-            
-          demand \
+
+            demand \
             final.is_a?(::String) && final.strip.empty?, \
             "...can't contain empty strings."
-            
-        }
+
+      }
         return!
-      end
+    end
 
-      get
-      def symbols!
-        Checked::App.new.get!("/array!/not_empty!", 'name'=>target_name, 'value'=>return!, 'args'=>[])
-        demand \
-          return!.all? { |v| v.is_a?(Symbol) }, \
+    def symbols!
+      not_empty!
+      demand \
+        return!.all? { |v| v.is_a?(Symbol) }, \
           "...contains a non-symbol."
-      end
+    end
 
-      get
-      def include! 
-        demand return!.include?(matcher), \
+    def include! 
+      demand return!.include?(matcher), \
           "...must contain: #{matcher.inspect}"
-      end
+    end
 
-      get
-      def exclude! 
-        demand val.include?(matcher), "...can't contain #{matcher.inspect}"
-      end
+    def exclude! 
+      demand val.include?(matcher), "...can't contain #{matcher.inspect}"
+    end
 
-      get
-      def matches_only! 
-        demand \
-          return!.reject { |val| val == matcher }.empty?, \
+    def matches_only! 
+      demand \
+        return!.reject { |val| val == matcher }.empty?, \
           "...invalid elements: #{arr.inspect}"
-      end
-      
+    end
 
-    end # === class Arrays
-  end # === class Demand
+
+  end # === class Arrays
 end # === class Checked
 
