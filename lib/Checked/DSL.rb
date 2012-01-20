@@ -165,6 +165,9 @@ class Checked
 
     end # === module Rack_Arch
     
+    include Ruby
+    include Racked
+    
   end # === module DSL
   
 end # === class Checked
