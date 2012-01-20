@@ -1,18 +1,18 @@
 class Object
 
   def Checked= val
-    @sin_arch = val
+    @checked_arch = val
     val.return! self
     val
   end
   
   def Checked
     raise "Not defined yet." unless Checked_applys?
-    @sin_arch
+    @checked_arch
   end
 
   def Checked_applys?
-    instance_variable_defined?(:@sin_arch)
+    instance_variable_defined?(:@checked_arch)
   end
 
   def method_missing meth_name, *args
@@ -29,7 +29,10 @@ class Object
     result = Checked().send meth_name, *args
     @count = 1
     
-    result.Checked= Checked() if meth_name.to_s['!'] && self.class == result.class
+    if result.object_it != object_id && meth_name.to_s['!'] && self.class == result.class
+      result.Checked= Checked() 
+    end
+    
     result
   end
 
