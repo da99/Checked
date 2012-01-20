@@ -29,7 +29,7 @@ class Object
     result = Checked().send meth_name, *args
     @count = 1
     
-    if result.object_it != object_id && meth_name.to_s['!'] && self.class == result.class
+    if result.object_id != object_id && meth_name.to_s['!'] && self.class == result.class
       result.Checked= Checked() 
     end
     
@@ -121,23 +121,6 @@ class Checked
 
       include Ruby
 
-      def self.eval! m
-        caller(1).first =~ %r!([^\:]+):(\d+):in `.!
-        if $1 && $2
-          eval m, nil, $1, $2.to_i - m.split("\n").size + 1
-        else
-          eval m, nil
-        end
-      end
-
-      %w{ Array Bool File_Path Hash String Symbol Var }.each { |name|
-        eval! %~
-          def #{name}!( *args )
-            Check!( '#{name}s', *args ).check!
-          end
-        ~
-      }
-
       def demand *pars
         if pars.size == 2
           val = return!
@@ -153,6 +136,26 @@ class Checked
         super( return!, bool, msg )
       end
 
+      def self.eval! m
+        caller(1).first =~ %r!([^\:]+):(\d+):in `.!
+        if $1 && $2
+          eval m, nil, $1, $2.to_i - m.split("\n").size + 1
+        else
+          eval m, nil
+        end
+      end
+
+      %w{ Array Bool File_Path Hash String Symbol Var }.each { |name|
+        eval! %~
+          def #{name}! *args
+            c = Checked::#{name}s.new(*args )
+            val = c.return!
+            val.Checked= c
+            val.return!
+          end
+        ~
+      }
+
       def Stripped! *args
         v = String!(*args)
         n = v.strip
@@ -160,36 +163,7 @@ class Checked
         n
       end
 
-      def Check! ns, *name_and_or_val
-        name, val = case name_and_or_val.size
-                    when 1
-                      [ nil, name_and_or_val.first ]
-                    when 2
-                      name_and_or_val
-                    else
-                      raise ArgumentError, "Unknown values for name/value: #{name_and_or_val.inspect}"
-                    end
-
-        val.Checked=Checked.const_get(ns.to_sym).new
-        val.Checked.target_name = name
-        val.Checked.return! val
-        val.Checked.check!
-        val
-      end
-
-      # ============= Ask ================
-
-      def any? target, *args
-        raise "No block allowed." if block_given?
-
-        args.map { |a|
-          send "#{klass}?", target, a
-          check_it( 'ask', _main_class_(target), nil, target).send( a ).request.response.body
-        }.compact == [true]
-      end
-
-
-      end # === module Rack_Arch
+    end # === module Rack_Arch
     
   end # === module DSL
   

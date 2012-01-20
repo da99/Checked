@@ -14,9 +14,18 @@ class Checked
     
     include DSL::Racked
     
-    def initialize *args
-      @target = nil
-      super
+    def initialize *name_and_or_val 
+      name, val = case name_and_or_val.size
+                  when 1
+                    [ nil, name_and_or_val.first ]
+                  when 2
+                    name_and_or_val
+                  else
+                    raise ArgumentError, "Unknown values for name/value: #{name_and_or_val.inspect}"
+                  end
+      self.target_name = name
+      return! val
+      check!
     end
     
     def request
