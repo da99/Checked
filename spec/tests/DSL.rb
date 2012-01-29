@@ -35,6 +35,76 @@ describe "hash! " do
   
 end # === describe array! check!
 
+describe "Size!" do
+  
+  behaves_like :racked_dsl
+  
+  it 'raises ArgumentError if size of array is not within range' do
+    target = [:a, :b, :c]
+    r      = 1..2
+    lambda { Size!(target, r) }
+    .should.raise(ArgumentError)
+    .message.should == "Array, #{target.inspect}, can only contain #{r.to_a.join ' or '} items."
+  end
+  
+  it 'raises ArgumentError if size is not a Fixnum or Range' do
+    lambda { Size!([], [0]) }
+    .should.raise(ArgumentError)
+    .message.should == "Wrong class for size: #{[0].inspect}"
+  end
+  
+  it 'raises ArgumentError if missing size' do
+    lambda { Size!([:a, :b, :c]) }
+    .should.raise(ArgumentError)
+  end
+  
+  it 'returns array' do
+    t = [:a, :b]
+    Size!( t, 1..2).object_id.should == t.object_id
+  end
+  
+end # === describe Sizes_0_1!
+
+describe "get_or_set :@var" do
+  
+  behaves_like :racked_dsl
+  
+  it 'raises ArgumentError if instance variable has not been initialized.' do
+    lambda { get_or_set :@something }
+    .should.raise(ArgumentError)
+    .message.should.match %r!@something has not been defined!
+  end
+  
+  it 'gets instance variable if array is empty.' do
+    @server = :hi
+    get_or_set( :@server ).should == @server
+  end
+  
+end # === describe get_or_set
+
+describe "get_or_set :@var, var" do
+  
+  behaves_like :racked_dsl
+  
+  it 'raises ArgumentError if instance variable has not been initialized.' do
+    lambda { get_or_set :@someg, :hi}
+    .should.raise(ArgumentError)
+    .message.should.match %r!@someg has not been defined!
+  end
+  
+  it 'sets instance variable.' do
+    @server = :hi
+    get_or_set( :@server, :bye)
+    @server.should == :bye
+  end
+  
+  it 'returns last value' do
+    @server = :hi
+    get_or_set( :@server, :bye ).should == :bye
+  end
+  
+end # === describe get_or_set
+
 describe "string! " do
   
   behaves_like :ruby_dsl

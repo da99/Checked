@@ -114,6 +114,18 @@ class Checked
         end
         true
       end
+      
+      def get_or_set *args
+        Size! args, 1..2
+        name = args.shift
+        raise ArgumentError, "Instance variable #{name.inspect} has not been defined." unless instance_variable_defined?(name)
+        
+        if args.empty?
+          instance_variable_get name
+        else
+          instance_variable_set name, args.first
+        end
+      end
 
     end # === module Ruby
 
@@ -161,6 +173,23 @@ class Checked
         n = v.strip
         n.Checked= v.Checked
         n
+      end
+      
+      def Size! arg, num_or_range
+        sizes = case num_or_range
+                when Fixnum
+                  [num_or_range]
+                when Range
+                  num_or_range.to_a
+                else
+                  raise ArgumentError, "Wrong class for size: #{num_or_range.inspect}"
+                end
+        
+        if not sizes.include?(arg.size)
+          raise ArgumentError, "Array, #{arg.inspect}, can only contain #{sizes.join ' or '} items."
+        end
+        
+        arg
       end
 
     end # === module Rack_Arch
