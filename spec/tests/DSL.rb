@@ -65,46 +65,6 @@ describe "Size!" do
   
 end # === describe Sizes_0_1!
 
-describe "get_or_set :@var" do
-  
-  behaves_like :racked_dsl
-  
-  it 'raises ArgumentError if instance variable has not been initialized.' do
-    lambda { get_or_set :@something }
-    .should.raise(ArgumentError)
-    .message.should.match %r!@something has not been defined!
-  end
-  
-  it 'gets instance variable if array is empty.' do
-    @server = :hi
-    get_or_set( :@server ).should == @server
-  end
-  
-end # === describe get_or_set
-
-describe "get_or_set :@var, var" do
-  
-  behaves_like :racked_dsl
-  
-  it 'raises ArgumentError if instance variable has not been initialized.' do
-    lambda { get_or_set :@someg, :hi}
-    .should.raise(ArgumentError)
-    .message.should.match %r!@someg has not been defined!
-  end
-  
-  it 'sets instance variable.' do
-    @server = :hi
-    get_or_set( :@server, :bye)
-    @server.should == :bye
-  end
-  
-  it 'returns last value' do
-    @server = :hi
-    get_or_set( :@server, :bye ).should == :bye
-  end
-  
-end # === describe get_or_set
-
 describe "string! " do
   
   behaves_like :ruby_dsl
