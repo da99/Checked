@@ -1,6 +1,7 @@
 require "Checked/version"
 require "Checked/DSL"
 require "Checked/Arch"
+require "Checked/Spec"
 
 
 class Checked

@@ -45,17 +45,8 @@ class Checked
   
     module Ruby
 
-      include Term::ANSIColor
-      
       def spec val, msg
-        at_exit {
-          next if $!
-          if val 
-            puts green(msg) 
-          else
-            puts red(msg) 
-          end
-        }
+        ::Checked::SPECS.spec val, msg
       end
 
       def demand val, bool, raw_msg
