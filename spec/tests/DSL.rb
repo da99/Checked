@@ -65,6 +65,39 @@ describe "Size!" do
   
 end # === describe Sizes_0_1!
 
+describe ":spec" do
+
+  before { extend Term::ANSIColor }
+        
+  it 'outputs a green line if pass' do
+    dsl_e(%~
+      spec true, 'It passed.'       
+    ~).should == green("It passed.")
+  end
+
+  it 'outputs a red line if fail' do
+    dsl_e(%~
+      spec false, 'It failed.'       
+    ~).should == red("It failed.")
+  end
+
+  it 'prints message :at_exit' do
+    dsl_e(%~
+      spec true, 'It is true.'       
+      puts "First output."
+    ~).should == "First output.\n#{green 'It is true.'}"
+  end
+
+  it 'does not output message if there were any exceptions raised' do
+    dsl_e(%~
+      spec true, "Never gets printed."
+      raise "something"
+    ~)
+    .should.match %r!\A/tmp/Checked_Test/[a-zA-Z\_\-\d]+.rb:\d+:in `<main>': something \(RuntimeError\)\Z!
+  end
+  
+end # === describe :spec
+
 describe "string! " do
   
   behaves_like :ruby_dsl

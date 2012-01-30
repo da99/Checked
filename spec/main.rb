@@ -14,10 +14,8 @@ end
 
 
 FOLDER = ("/tmp/Checked_Test")
+%x! rm -r #{FOLDER} ! if File.directory?(FOLDER)
 %x! mkdir -p #{FOLDER}!
-at_exit {
-  %x! rm -rf #{FOLDER} !
-}
 
 def ruby_e cmd
   file = "#{FOLDER}/delete_me_perf_#{rand(100000)}.rb"
@@ -33,6 +31,14 @@ def ruby_e cmd
   ensure
     File.delete file
   end
+end
+
+def dsl_e cmd
+  ruby_e %~
+    require 'Checked'
+    extend Checked::DSL
+    #{cmd}
+  ~
 end
 
 Dir.glob('spec/tests/*.rb').each { |file|

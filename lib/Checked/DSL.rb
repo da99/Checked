@@ -1,3 +1,5 @@
+require 'term/ansicolor'
+
 class Object
 
   def Checked= val
@@ -42,6 +44,19 @@ class Checked
   module DSL
   
     module Ruby
+
+      include Term::ANSIColor
+      
+      def spec val, msg
+        at_exit {
+          next if $!
+          if val 
+            puts green(msg) 
+          else
+            puts red(msg) 
+          end
+        }
+      end
 
       def demand val, bool, raw_msg
         return val if bool
