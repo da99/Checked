@@ -48,6 +48,10 @@ class Checked
       def spec val, msg
         ::Checked::SPECS.spec val, msg
       end
+      
+      def dont_print_specs
+        ::Checked::SPECS.dont_print
+      end
 
       def demand val, bool, raw_msg
         return val if bool

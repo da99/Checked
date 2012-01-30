@@ -98,6 +98,26 @@ describe ":spec" do
   
 end # === describe :spec
 
+describe ":dont_print_specs" do
+  
+  it 'prevents specs from being printed' do
+    dsl_e(%~
+      puts 'No specs printed.'
+      spec true, "Never gets printed."
+      dont_print_specs
+    ~).should == 'No specs printed.'
+  end
+  
+  it 'sets SPECS.print? to false' do
+    dsl_e(%~
+      puts Checked::SPECS.print?.inspect
+      dont_print_specs
+      puts Checked::SPECS.print?.inspect
+    ~).should == "true\nfalse"
+  end
+
+end # === describe SPECS#dont_print
+
 describe "string! " do
   
   behaves_like :ruby_dsl

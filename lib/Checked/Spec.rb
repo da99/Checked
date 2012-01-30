@@ -7,6 +7,7 @@ class Checked
       
     def initialize
       @specs = []
+      @print = true
     end
 
     def spec val, msg
@@ -20,8 +21,16 @@ class Checked
       @specs
     end
     
+    def dont_print
+      @print = false
+    end
+
+    def print?
+      @print
+    end
+
     def print
-      return nil if $!
+      return nil if $! || !print?
       @specs.each { |pair|
         
         val, msg = pair
