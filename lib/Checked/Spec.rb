@@ -49,9 +49,9 @@ class Checked
         val, msg = pair
         
         if val
-          puts green(msg)
+          $stdout.print green(msg), "\n"
         else
-          puts red(msg)
+          $stdout.print red(msg), "\n"
         end
         
       }
