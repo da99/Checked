@@ -1,6 +1,10 @@
 
 class Checked
   
+  class Spec
+    Fail = Class.new(RuntimeError)
+  end
+
   class Specs
     
     include Term::ANSIColor
@@ -12,9 +16,19 @@ class Checked
 
     def spec val, msg
       if to_a.empty?
-        at_exit { ::Checked::SPECS.print }
+        at_exit { ::Checked::SPECS.print if !$! && ::Checked::SPECS.print? }
       end
       @specs << [val, msg]
+    end
+    
+    def spec! val, msg
+      if val
+        spec val, msg
+      else
+        print
+        dont_print
+        raise Checked::Spec::Fail, red(msg)
+      end
     end
     
     def to_a
@@ -30,7 +44,6 @@ class Checked
     end
 
     def print
-      return nil if $! || !print?
       @specs.each { |pair|
         
         val, msg = pair

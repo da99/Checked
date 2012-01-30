@@ -17,6 +17,7 @@ FOLDER = ("/tmp/Checked_Test")
 %x! rm -r #{FOLDER} ! if File.directory?(FOLDER)
 %x! mkdir -p #{FOLDER}!
 
+require 'open3'
 def ruby_e cmd
   file = "#{FOLDER}/delete_me_perf_#{rand(100000)}.rb"
   begin
@@ -27,9 +28,14 @@ def ruby_e cmd
       #{cmd}
     ~
     }
-  %x[ bundle exec ruby #{file} 2>&1].strip
-  ensure
-    File.delete file
+  # %x[ bundle exec ruby #{file} 2>&1].strip
+  
+  data = ''
+  Open3.popen3(" bundle exec ruby #{file}") { |i, o, e, t|
+    data << o.read
+    data << e.read
+  }
+  data.strip
   end
 end
 

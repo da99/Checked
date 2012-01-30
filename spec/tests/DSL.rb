@@ -98,6 +98,26 @@ describe ":spec" do
   
 end # === describe :spec
 
+describe ":spec! bool, msg" do
+  
+  it 'prints remaining specs, then raises Spec::Failed' do
+    start = "\e[32mThis is true.\e[0m\n\e[31mThis is false.\e[0m\n/home/#{`whoami`.strip}"
+    middle = ":in `spec!': \e[31mThis is error.\e[0m (Checked::Spec::Fail)\n\tfrom /"
+    ending = ":in `<main>'"
+    m = dsl_e(%~
+      spec true, "This is true."
+      spec false, "This is false."
+      spec! false, "This is error."
+      spec true, "This never gets printed."
+    ~)
+    
+    m.index(start).should == 0
+    m[middle].should == middle
+    m.should.match %r!#{Regexp.escape ending}\Z!
+  end
+  
+end # === describe :spec! bool, msg
+
 describe ":dont_print_specs" do
   
   it 'prevents specs from being printed' do
