@@ -29,5 +29,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "bacon"         , "~> 1.0"
   spec.add_development_dependency "Bacon_Colored" , "~> 0.1"
 
-  s.add_runtime_dependency 'term-ansicolor'
+  spec.add_runtime_dependency 'term-ansicolor'
 end
